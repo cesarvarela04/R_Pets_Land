@@ -4,11 +4,7 @@ import co.petsland.model.Veterinarias;
 import co.petsland.model.dto.VeterinariasDTO;
 
 import java.math.BigDecimal;
-
 import java.util.*;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -57,4 +53,6 @@ public interface IVeterinariasLogic {
 
     public List<VeterinariasDTO> getDataVeterinarias()
         throws Exception;
+
+    public Long existeVeterinaria(String nombre) throws Exception;
 }

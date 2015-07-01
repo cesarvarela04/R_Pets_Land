@@ -3,49 +3,65 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated 28/06/2015 09:53:52 PM by Hibernate Tools 4.0.0 -->
 <hibernate-mapping>
-    <class name="co.petsland.model.Veterinarias" table="veterinarias" schema="public">
-        <id name="vetCodigo" type="java.lang.Long">
-            <column name="vet_codigo" />
-            <generator class="assigned" />
-        </id>
-        <property name="vetNombre" type="java.lang.String">
-            <column name="vet_nombre" length="150" not-null="true" />
-        </property>
-        <property name="vetUsuCrea" type="java.lang.String">
-            <column name="vet_usu_crea" length="150" not-null="true" />
-        </property>
-        <property name="vetUsuModifica" type="java.lang.String">
-            <column name="vet_usu_modifica" length="150" />
-        </property>
-        <property name="vetDireccion" type="java.lang.String">
-            <column name="vet_direccion" length="150" not-null="true" />
-        </property>
-        <property name="vetTelefono" type="java.lang.String">
-            <column name="vet_telefono" length="150" not-null="true" />
-        </property>
-        <property name="vetUrl" type="java.lang.String">
-            <column name="vet_url" length="150" />
-        </property>
-        <property name="vetEstado" type="java.lang.String">
-            <column name="vet_estado" length="1" not-null="true" />
-        </property>
-        <set name="eventosVeterinariases" table="eventos_veterinarias" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="vet_codigo" not-null="true" />
-            </key>
-            <one-to-many class="co.petsland.model.EventosVeterinarias" />
-        </set>
-        <set name="vetsServses" table="vets_servs" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="vet_codigo" not-null="true" />
-            </key>
-            <one-to-many class="co.petsland.model.VetsServs" />
-        </set>
-        <set name="sucursaleses" table="sucursales" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="vet_codigo" not-null="true" />
-            </key>
-            <one-to-many class="co.petsland.model.Sucursales" />
-        </set>
-    </class>
+	<class name="co.petsland.model.Veterinarias" table="veterinarias"
+		schema="public">
+		<id name="vetCodigo" type="java.lang.Long">
+			<column name="vet_codigo" />
+			<generator class="sequence">
+				<param name="sequence">veterinarias_vet_codigo_seq</param>
+			</generator>
+		</id>
+		<property name="vetNombre" type="java.lang.String">
+			<column name="vet_nombre" length="150" not-null="true" />
+		</property>
+		<property name="vetUsuCrea" type="java.lang.String">
+			<column name="vet_usu_crea" length="150" not-null="true" />
+		</property>
+		<property name="vetUsuModifica" type="java.lang.String">
+			<column name="vet_usu_modifica" length="150" />
+		</property>
+		<property name="vetDireccion" type="java.lang.String">
+			<column name="vet_direccion" length="150" not-null="true" />
+		</property>
+		<property name="vetTelefono" type="java.lang.String">
+			<column name="vet_telefono" length="150" not-null="true" />
+		</property>
+		<property name="vetUrl" type="java.lang.String">
+			<column name="vet_url" length="150" />
+		</property>
+		<property name="vetEstado" type="java.lang.String">
+			<column name="vet_estado" length="1" not-null="true" />
+		</property>
+		<set name="eventosVeterinariases" table="eventos_veterinarias"
+			inverse="true" lazy="true" fetch="select">
+			<key>
+				<column name="vet_codigo" not-null="true" />
+			</key>
+			<one-to-many class="co.petsland.model.EventosVeterinarias" />
+		</set>
+		<set name="vetsServses" table="vets_servs" inverse="true" lazy="true"
+			fetch="select">
+			<key>
+				<column name="vet_codigo" not-null="true" />
+			</key>
+			<one-to-many class="co.petsland.model.VetsServs" />
+		</set>
+		<set name="sucursaleses" table="sucursales" inverse="true" lazy="true"
+			fetch="select">
+			<key>
+				<column name="vet_codigo" not-null="true" />
+			</key>
+			<one-to-many class="co.petsland.model.Sucursales" />
+		</set>
+	</class>
+
+	<sql-query name="existeCategoria">
+
+		<return-scalar column="cont" type="java.lang.Long" />
+
+	<![CDATA[SELECT COUNT(*) cont
+                 FROM Veterinarias vete
+                 WHERE vete.vet_nombre=:pNombre]]>
+	</sql-query>
+
 </hibernate-mapping>

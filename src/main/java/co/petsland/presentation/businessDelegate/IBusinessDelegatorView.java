@@ -211,5 +211,5 @@ public interface IBusinessDelegatorView {
 
 	public UsuariosDTO consultaUsuarioXEmail(String email) throws Exception;
 
-	public void updateVeterinaria(Veterinarias entity) throws Exception;
+	
 }

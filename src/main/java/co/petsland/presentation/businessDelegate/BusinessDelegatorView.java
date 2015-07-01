@@ -465,9 +465,5 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 		return usuariosLogic.consultaUsuarioXEmail(email);
 	}
 
-	@Override
-	public void updateVeterinaria(Veterinarias entity) throws Exception {
-		   usuariosLogic.updateVeterinaria(entity);
-		
-	}
+	
 }

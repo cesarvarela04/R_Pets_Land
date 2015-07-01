@@ -6,7 +6,9 @@
     <class name="co.petsland.model.VetsServs" table="vets_servs" schema="public">
         <id name="vsCodigo" type="java.lang.Long">
             <column name="vs_codigo" />
-            <generator class="assigned" />
+            <generator class="sequence">
+				<param name="sequence">vets_servs_vs_codigo_seq</param>
+			</generator>
         </id>
         <many-to-one name="servicios" class="co.petsland.model.Servicios" fetch="select">
             <column name="ser_codigo" not-null="true" />

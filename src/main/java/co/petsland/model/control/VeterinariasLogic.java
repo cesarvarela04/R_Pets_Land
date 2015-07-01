@@ -96,9 +96,16 @@ public class VeterinariasLogic implements IVeterinariasLogic {
             }
 
             if (entity.getVetEstado() == null) {
-                throw new ZMessManager().new EmptyFieldException("vetEstado");
-            }
+            	throw new Exception(
+                        "El Estado Registro no puede estar nulo");}
 
+            if ((entity.getVetEstado() != null) &&
+                    (Utilities.checkWordAndCheckWithlength(
+                        entity.getVetEstado(), 1) == false)) {
+                throw new Exception(
+                    "El Estado Registro no puede tener mas de 1 caracter");
+            }
+            
             if ((entity.getVetEstado() != null) &&
                     (Utilities.checkWordAndCheckWithlength(
                         entity.getVetEstado(), 1) == false)) {
@@ -107,7 +114,7 @@ public class VeterinariasLogic implements IVeterinariasLogic {
             }
 
             if (entity.getVetNombre() == null) {
-                throw new ZMessManager().new EmptyFieldException("vetNombre");
+            	throw new Exception("El nombre de la veterinaria no puede estar nulo");
             }
 
             if ((entity.getVetNombre() != null) &&
@@ -115,6 +122,12 @@ public class VeterinariasLogic implements IVeterinariasLogic {
                         entity.getVetNombre(), 150) == false)) {
                 throw new ZMessManager().new NotValidFormatException(
                     "vetNombre");
+            }
+            
+            if ((entity.getVetNombre() != null) &&
+                    (Utilities.checkWordAndCheckWithlength(entity.getVetNombre(),
+                        150) == false)) {
+                throw new Exception("El Nombre no puede tener mas de 150 caracteres");
             }
 
             if (entity.getVetTelefono() == null) {
@@ -156,12 +169,26 @@ public class VeterinariasLogic implements IVeterinariasLogic {
                 throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
             }
 
+            entity.setVetNombre(entity.getVetNombre().toUpperCase());
+            
+            Long existe=existeVeterinaria(entity.getVetNombre());
+            
+            if(existe>=1){
+            	throw new Exception("Ya existe la categoria ingresada");
+            }
+            
             veterinariasDAO.save(entity);
         } catch (Exception e) {
             throw e;
         } finally {
         }
     }
+    
+    @Transactional(readOnly = true)
+	@Override
+	public Long existeVeterinaria(String nombre) throws Exception {
+		return veterinariasDAO.existeVeterinaria(nombre);
+	}
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void deleteVeterinarias(Veterinarias entity)
@@ -212,34 +239,37 @@ public class VeterinariasLogic implements IVeterinariasLogic {
     public void updateVeterinarias(Veterinarias entity)
         throws Exception {
         try {
-            if (entity == null) {
+           /* if (entity == null) {
                 throw new ZMessManager().new NullEntityExcepcion("Veterinarias");
-            }
+            }*/
 
             if (entity.getVetCodigo() == null) {
-                throw new ZMessManager().new EmptyFieldException("vetCodigo");
+            	throw new Exception("El codigo Veterinaria no puede estar nulo");
             }
 
             if (entity.getVetDireccion() == null) {
-                throw new ZMessManager().new EmptyFieldException("vetDireccion");
+            	throw new Exception("La direccion no puede estar nulo");
             }
 
             if ((entity.getVetDireccion() != null) &&
                     (Utilities.checkWordAndCheckWithlength(
                         entity.getVetDireccion(), 150) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "vetDireccion");
+            	 throw new Exception(
+                         "El Estado Registro no puede tener mas de 150 caractereres");
+                 
             }
 
             if (entity.getVetEstado() == null) {
-                throw new ZMessManager().new EmptyFieldException("vetEstado");
+            	throw new Exception(
+                        "El EstadoRegistro no puede estar nulo");
             }
 
             if ((entity.getVetEstado() != null) &&
                     (Utilities.checkWordAndCheckWithlength(
                         entity.getVetEstado(), 1) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "vetEstado");
+            	 throw new Exception(
+                         "El Estado Registro no puede tener mas de 1 caracter");
+                 
             }
 
             if (entity.getVetNombre() == null) {
@@ -249,8 +279,9 @@ public class VeterinariasLogic implements IVeterinariasLogic {
             if ((entity.getVetNombre() != null) &&
                     (Utilities.checkWordAndCheckWithlength(
                         entity.getVetNombre(), 150) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "vetNombre");
+            	throw new Exception(
+                        "El Estado Registro no puede tener mas de 150 caractereres");
+                
             }
 
             if (entity.getVetTelefono() == null) {
@@ -260,14 +291,17 @@ public class VeterinariasLogic implements IVeterinariasLogic {
             if ((entity.getVetTelefono() != null) &&
                     (Utilities.checkWordAndCheckWithlength(
                         entity.getVetTelefono(), 150) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "vetTelefono");
+            	throw new Exception(
+                        "El Estado Registro no puede tener mas de 150 caractereres");
+                
             }
 
             if ((entity.getVetUrl() != null) &&
                     (Utilities.checkWordAndCheckWithlength(entity.getVetUrl(),
                         150) == false)) {
-                throw new ZMessManager().new NotValidFormatException("vetUrl");
+            	throw new Exception(
+                        "El Estado Registro no puede tener mas de 150 caractereres");
+                
             }
 
             if (entity.getVetUsuCrea() == null) {
@@ -277,18 +311,33 @@ public class VeterinariasLogic implements IVeterinariasLogic {
             if ((entity.getVetUsuCrea() != null) &&
                     (Utilities.checkWordAndCheckWithlength(
                         entity.getVetUsuCrea(), 150) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "vetUsuCrea");
+            	throw new Exception(
+                        "El Estado Registro no puede tener mas de 150 caractereres");
+                
             }
 
             if ((entity.getVetUsuModifica() != null) &&
                     (Utilities.checkWordAndCheckWithlength(
                         entity.getVetUsuModifica(), 150) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "vetUsuModifica");
+            	throw new Exception(
+                        "El Estado Registro no puede tener mas de 150 caractereres");
+                
             }
 
-            veterinariasDAO.update(entity);
+           Veterinarias veterinariaDB =getVeterinarias(entity.getVetCodigo());
+            
+            if(entity.getVetNombre().equalsIgnoreCase(veterinariaDB.getVetNombre())){
+            	
+            }else{
+                Long existe=existeVeterinaria(entity.getVetNombre());
+                
+                if(existe>=1){
+                	throw new Exception("Ya existe la veterinaria ingresada");
+                }
+            }
+            
+            
+            veterinariasDAO.merge(entity);
         } catch (Exception e) {
             throw e;
         } finally {

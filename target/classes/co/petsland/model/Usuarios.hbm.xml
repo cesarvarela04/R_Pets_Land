@@ -6,7 +6,9 @@
 	<class name="co.petsland.model.Usuarios" table="usuarios" schema="public">
 		<id name="usuCodigo" type="java.lang.Long">
 			<column name="usu_codigo" />
-			<generator class="sequence" />
+			<generator class="sequence">
+				<param name="sequence">usuarios_usu_codigo_seq</param>
+			</generator>
 		</id>
 		<many-to-one name="roles" class="co.petsland.model.Roles"
 			fetch="select">
@@ -61,7 +63,7 @@
                   AND u.usu_Email=:pCorreo
                   AND u.usu_Clave=:pPass]]>
 	</sql-query>
-	
+
 	<sql-query name="existeUsuarioMail">
 
 		<return-scalar column="cont" type="java.lang.Long" />
@@ -90,9 +92,9 @@
      INNER JOIN Roles rl ON rl.rol_codigo = u.rol_codigo
                 WHERE u.usu_email=:pCorreo]]>
 
-	
+
 	</sql-query>
-	
+
 	<sql-query name="loginUsuario2">
 
 		<return-scalar column="usuNombre" type="java.lang.String" />

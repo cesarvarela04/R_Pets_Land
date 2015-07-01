@@ -286,18 +286,28 @@ public class VeterinariasView implements Serializable {
 			if (btnModify.isDisabled() == false) {
 
 				entity = new Veterinarias();
-				entity.setVetEstado(estado);
+				System.out.println("if" + estado);
+				/*entity.setVetEstado(estado);
 				//entity.setFechaCreacion(new Date());
 				//entity.setFechaModifcacion(new Date());
 				entity.setVetNombre(FacesUtils.checkString(txtVetNombre));
 				entity.setVetUsuCrea(usuario.getUsuEmail());
-				entity.setVetUsuModifica(usuario.getUsuEmail());
+				entity.setVetUsuModifica(usuario.getUsuEmail());*/
+				
+
+				entity.setVetNombre (FacesUtils.checkString(txtVetNombre));
+				entity.setVetUsuCrea (usuario.getUsuEmail());  
+				entity.setVetDireccion(FacesUtils.checkString("Direccion1")); 
+				entity.setVetTelefono(FacesUtils.checkString("Telefono1"));   
+				entity.setVetEstado(estado);
+				
 				businessDelegatorView.saveVeterinarias(entity);				
 				FacesUtils.addInfoMessage("Se guardo con exito la categoria");
 
 			} else {
 
 				entity = new Veterinarias();
+				System.out.println("" + estado);
 				entity.setVetCodigo(selectedVeterinarias.getVetCodigo());
 				entity.setVetEstado(estado);
 				//entity.setFechaCreacion(new Date());
@@ -305,7 +315,7 @@ public class VeterinariasView implements Serializable {
 				entity.setVetNombre(FacesUtils.checkString(txtVetNombre));
 				entity.setVetUsuCrea(usuario.getUsuEmail());
 				entity.setVetUsuModifica(usuario.getUsuEmail());
-				businessDelegatorView.updateVeterinaria(entity);
+				businessDelegatorView.updateVeterinarias(entity);
 
 				FacesUtils.addInfoMessage("Se modifico con exito la categoria");
 
@@ -325,6 +335,7 @@ public class VeterinariasView implements Serializable {
 
 		} catch (Exception e) {
 			FacesUtils.addErrorMessage(e.getMessage());
+			System.out.println(e);
 		}
 
 		return "";
@@ -645,6 +656,14 @@ public String editar(){
 
 	public void setVeterinariaDataModel(VeterinariasDataModel veterinariaDataModel) {
 		this.veterinariaDataModel = veterinariaDataModel;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
     
     

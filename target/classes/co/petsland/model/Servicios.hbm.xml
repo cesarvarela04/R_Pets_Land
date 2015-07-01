@@ -6,7 +6,9 @@
     <class name="co.petsland.model.Servicios" table="servicios" schema="public">
         <id name="serCodigo" type="java.lang.Long">
             <column name="ser_codigo" />
-            <generator class="assigned" />
+            <generator class="sequence">
+				<param name="sequence">servicios_ser_codigo_seq</param>
+			</generator>  
         </id>
         <property name="serNombre" type="java.lang.String">
             <column name="ser_nombre" length="150" not-null="true" />

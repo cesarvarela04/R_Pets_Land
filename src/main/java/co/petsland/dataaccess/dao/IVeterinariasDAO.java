@@ -1,7 +1,6 @@
 package co.petsland.dataaccess.dao;
 
 import co.petsland.dataaccess.api.Dao;
-
 import co.petsland.model.Veterinarias;
 
 
@@ -10,4 +9,8 @@ import co.petsland.model.Veterinarias;
 *
 */
 public interface IVeterinariasDAO extends Dao<Veterinarias, Long> {
+
+	public Long existeVeterinaria(String nombre)throws Exception;
+
+
 }
