@@ -1,6 +1,7 @@
 package co.petsland.model.control;
 
 import co.petsland.model.Usuarios;
+import co.petsland.model.Veterinarias;
 import co.petsland.model.dto.UsuariosDTO;
 
 import java.math.BigDecimal;
@@ -53,4 +54,6 @@ public interface IUsuariosLogic {
     public UsuariosDTO loginUsario(String correo, String pass) throws Exception;
 
 	public UsuariosDTO consultaUsuarioXEmail(String email) throws Exception;
+
+	public Object updateVeterinaria(Veterinarias entity) throws Exception;
 }

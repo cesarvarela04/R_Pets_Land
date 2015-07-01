@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+
+	<meta charset="UTF-8" />
+	<title>PETS LAND || VETERINARIAS</title>
+	<meta
+		content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
+		name='viewport' />
+
+</h:head>
+
+<h:body class="skin-green">
+	<ui:composition template="/ROOT/menuRoot.xhtml">
+		<ui:define name="body">
+			<f:view>
+
+				<!-- Site wrapper -->
+				<div  style="min-height:100%">
+
+
+							<f:view>
+
+								<h:form id="form">
+									<p:messages id="msg" />
+
+									<div class="panel panel-default" style="height:780px">
+
+										<div class="panel-heading" align="center"
+											style="font-family: sans-serif; font-size: 150%;">Veterinarias</div>
+
+										<div class="panel-body">
+											<p:dataTable value="#{veterinariasView.veterinariaDataModel}"
+												var="veterinaria"
+												selection="#{veterinariasView.selectedVeterinarias}" id="tabla"
+												paginator="true" rows="5">
+
+												<p:column selectionMode="single" style="width:40px" />
+
+												<p:column filterBy="#{veterinaria.vetNombre}"
+													sortBy="#{veterinaria.vetNombre}">
+													<f:facet name="header">
+														<h:outputText value="Nombre Veterinaria" />
+													</f:facet>
+													<h:outputText value="#{veterinaria.vetNombre}" />
+												</p:column>
+
+												<p:column filterBy="#{veterinaria.vetEstado}"
+													sortBy="#{veterinaria.vetEstado}">
+													<f:facet name="header">
+														<h:outputText value="Estado Registro" />
+													</f:facet>
+													<h:outputText value="#{veterinaria.vetEstado}" />
+												</p:column>
+
+											</p:dataTable>
+
+											<p:spacer height="5px" />
+
+											<div align="center">
+
+												<p:commandButton id="btonCrear" value="Crear"
+													action="#{veterinariasView.limpiar}"
+													styleClass="btn btn-success" icon="ui-icon-plus"
+													update=":formDlg2:txtNombre, :formDlg2:idEstado, :formDlg2:messages"
+													onclick="$('#dlgModificar').modal('show');" />
+
+												<p:commandButton id="btonEditar" value="Editar"
+													action="#{veterinariasView.editar()}"
+													styleClass="btn btn-primary" icon="ui-icon-pencil"
+													update=":formDlg2:txtNombre, :formDlg2:idEstado, :formDlg2:messages"
+													binding="#{veterinariasView.btnModify}"
+													onclick="$('#dlgModificar').modal('show');" />
+
+											</div>
+
+										</div>
+
+									</div>
+
+								</h:form>
+
+								<h:form id="formDlg2">
+
+									<div class="modal fade" id="dlgModificar" tabindex="-1"
+										role="dialog" aria-labelledby="myModalLabel"
+										aria-hidden="true">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+
+													<h4 class="modal-title" align="center">Crear/Modificar
+														Veterinarias </h4>
+												</div>
+												<div class="modal-body" id="panelModificar">
+
+													<p:messages id="messages" autoUpdate="false"
+														closable="true" />
+
+													<h:outputText id="msgNombre" value=" Nombre: " />
+													<p:inputText id="txtNombre" type="text"
+														class="form-control" binding="#{veterinariasView.txtVetNombre}" />
+
+													<h:outputText id="msgEstadoRegistro" value=" Estado: " />
+													<h:selectOneMenu id="idEstado"
+														class="form-control text-center"
+														value="#{veterinariasView.txtVetEstado}">
+														<f:selectItem itemLabel="Activo" itemValue="A" />
+														<f:selectItem itemLabel="Retirado" itemValue="R" />
+													</h:selectOneMenu>
+
+													<p:spacer height="10px" />
+
+													<div align="center">
+														<p:commandButton id="btnSave"
+															binding="#{veterinariasView.btnSave}" value="Guardar"
+															class="btn btn-primary"
+															action="#{veterinariasView.guardarVeterinaria()}"
+															update=":form, :form:tabla, :formDlg2:messages" />
+
+														<p:commandButton value="Cerrar" class="btn btn-danger"
+															action="#{veterinariasView.limpiar}"
+															update=":form, formDlg2"
+															onclick="$('#dlgModificar').modal('hide');" />
+
+													</div>
+
+												</div>
+
+											</div>
+										</div>
+									</div>
+								</h:form>
+								<!-- Fin Dialogo Modificar -->
+
+							</f:view>
+
+					</div>
+				<!-- ./wrapper -->
+
+			</f:view>
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

@@ -1,27 +1,23 @@
 package co.petsland.presentation.backingBeans;
 
+import co.petsland.datamodel.VeterinariasDataModel;
 import co.petsland.exceptions.*;
-
 import co.petsland.model.*;
+import co.petsland.model.dto.UsuariosDTO;
 import co.petsland.model.dto.VeterinariasDTO;
-
 import co.petsland.presentation.businessDelegate.*;
-
 import co.petsland.utilities.*;
 
 import org.primefaces.component.calendar.*;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
-
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 
 import java.io.Serializable;
-
 import java.sql.*;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -58,11 +54,17 @@ public class VeterinariasView implements Serializable {
     private CommandButton btnDelete;
     private CommandButton btnClear;
     private List<VeterinariasDTO> data;
+    private List<VeterinariasDTO> listaVeterinarias;
     private VeterinariasDTO selectedVeterinarias;
     private Veterinarias entity;
     private boolean showDialog;
+    private boolean guardar;
+    private String estado;
+	private VeterinariasDataModel veterinariaDataModel;
     @ManagedProperty(value = "#{BusinessDelegatorView}")
     private IBusinessDelegatorView businessDelegatorView;
+    private UsuariosDTO usuario;
+
 
     public VeterinariasView() {
         super();
@@ -277,6 +279,58 @@ public class VeterinariasView implements Serializable {
         return "";
     }
 
+    public String guardarVeterinaria() {
+
+		try {
+
+			if (btnModify.isDisabled() == false) {
+
+				entity = new Veterinarias();
+				entity.setVetEstado(estado);
+				//entity.setFechaCreacion(new Date());
+				//entity.setFechaModifcacion(new Date());
+				entity.setVetNombre(FacesUtils.checkString(txtVetNombre));
+				entity.setVetUsuCrea(usuario.getUsuEmail());
+				entity.setVetUsuModifica(usuario.getUsuEmail());
+				businessDelegatorView.saveVeterinarias(entity);				
+				FacesUtils.addInfoMessage("Se guardo con exito la categoria");
+
+			} else {
+
+				entity = new Veterinarias();
+				entity.setVetCodigo(selectedVeterinarias.getVetCodigo());
+				entity.setVetEstado(estado);
+				//entity.setFechaCreacion(new Date());
+				//entity.setFechaModifcacion(new Date());
+				entity.setVetNombre(FacesUtils.checkString(txtVetNombre));
+				entity.setVetUsuCrea(usuario.getUsuEmail());
+				entity.setVetUsuModifica(usuario.getUsuEmail());
+				businessDelegatorView.updateVeterinaria(entity);
+
+				FacesUtils.addInfoMessage("Se modifico con exito la categoria");
+
+			}
+			data=null;
+			veterinariaDataModel = new VeterinariasDataModel(getData());
+			RequestContext.getCurrentInstance().update("formDlg2");
+			try {
+				selectedVeterinarias=data.get(0);
+			} catch (Exception e) {
+
+			}
+					
+			limpiar();
+			
+			RequestContext.getCurrentInstance().update("form:tabla");
+
+		} catch (Exception e) {
+			FacesUtils.addErrorMessage(e.getMessage());
+		}
+
+		return "";
+
+	}
+    
     public String action_create() {
         try {
             entity = new Veterinarias();
@@ -553,4 +607,46 @@ public class VeterinariasView implements Serializable {
     public void setShowDialog(boolean showDialog) {
         this.showDialog = showDialog;
     }
+
+	public String limpiar(){
+		
+		txtVetNombre.setValue("");
+		estado="A";
+		
+		btnModify.setDisabled(false);
+		
+		return "";
+	}
+	
+public String editar(){
+		
+		btnModify.setDisabled(true);
+		
+	    if(selectedVeterinarias!=null){
+			txtVetNombre.setValue(selectedVeterinarias.getVetNombre());
+			estado=selectedVeterinarias.getVetEstado();
+	    }else{
+	    	FacesUtils.addErrorMessage("No ha seleccionado ninguna Veterinaria");
+	    }
+		
+		return "";		
+	}
+    
+	public VeterinariasDataModel getVeterinariaDataModel() {
+		if (veterinariaDataModel == null) {
+			veterinariaDataModel = new VeterinariasDataModel(getData());
+			try {
+				selectedVeterinarias = data.get(0);
+			} catch (Exception e) {
+			}
+		}
+		return veterinariaDataModel;
+	}
+
+	public void setVeterinariaDataModel(VeterinariasDataModel veterinariaDataModel) {
+		this.veterinariaDataModel = veterinariaDataModel;
+	}
+    
+    
+    
 }

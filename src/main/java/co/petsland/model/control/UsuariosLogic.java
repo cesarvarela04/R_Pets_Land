@@ -543,4 +543,10 @@ public class UsuariosLogic implements IUsuariosLogic {
 	public UsuariosDTO consultaUsuarioXEmail(String email) throws Exception {
 		return usuariosDAO.consultaUsuarioXEmail(email);
 	}
+
+	@Override
+	public Object updateVeterinaria(Veterinarias entity) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

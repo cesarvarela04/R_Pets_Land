@@ -464,4 +464,10 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 	public UsuariosDTO consultaUsuarioXEmail(String email) throws Exception {
 		return usuariosLogic.consultaUsuarioXEmail(email);
 	}
+
+	@Override
+	public void updateVeterinaria(Veterinarias entity) throws Exception {
+		   usuariosLogic.updateVeterinaria(entity);
+		
+	}
 }
