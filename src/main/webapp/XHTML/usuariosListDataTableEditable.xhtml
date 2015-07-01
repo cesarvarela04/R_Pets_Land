@@ -1,0 +1,218 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>
+
+	<h:body>
+	    <ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		 
+		 	<ui:define name="body">	
+				<f:view>
+			<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+					<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   						<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+					</p:dialog>
+		 
+		 <h:form id="form">
+			
+			 
+			<p:panel id="msgProjectClientesTitle" header="UsuariosData">
+					<p:messages id="msg" />
+				<p:dataTable id ="tabla" value="#{usuariosView.data}" var="usuarios"
+					paginator="true" rows="5"  editable="true" >
+					 
+					 <p:ajax event ="rowEdit" update=":form:msg,:form:tabla" listener="#{usuariosView.rowEventListener}" />
+					
+															<p:column filterBy="#{usuarios.usuCodigo}" sortBy="#{usuarios.usuCodigo}" headerText="usuCodigo">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{usuarios.usuCodigo}"/>
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{usuarios.usuCodigo}"/>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+                    										
+											
+						<p:column filterBy="#{usuarios.usuClave}" sortBy="#{usuarios.usuClave}" 
+							headerText="usuClave">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{usuarios.usuClave}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{usuarios.usuClave}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{usuarios.usuCrea}" sortBy="#{usuarios.usuCrea}" 
+							headerText="usuCrea">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{usuarios.usuCrea}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{usuarios.usuCrea}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{usuarios.usuEmail}" sortBy="#{usuarios.usuEmail}" 
+							headerText="usuEmail">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{usuarios.usuEmail}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{usuarios.usuEmail}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{usuarios.usuEstado}" sortBy="#{usuarios.usuEstado}" 
+							headerText="usuEstado">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{usuarios.usuEstado}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{usuarios.usuEstado}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{usuarios.usuModifica}" sortBy="#{usuarios.usuModifica}" 
+							headerText="usuModifica">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{usuarios.usuModifica}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{usuarios.usuModifica}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{usuarios.usuNombre}" sortBy="#{usuarios.usuNombre}" 
+							headerText="usuNombre">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{usuarios.usuNombre}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{usuarios.usuNombre}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{usuarios.rolCodigo_Roles}" sortBy="#{usuarios.rolCodigo_Roles}" 
+							headerText="rolCodigo_Roles">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{usuarios.rolCodigo_Roles}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{usuarios.rolCodigo_Roles}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+										
+										   						 
+						 <p:column filterBy="#{usuarios.usuFechaCreacion}" sortBy="#{usuarios.usuFechaCreacion}" 
+							headerText="usuFechaCreacion">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{usuarios.usuFechaCreacion}">
+									  <f:convertDateTime  pattern="dd/MM/yyyy"/>
+									</h:outputText>		
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:calendar value="#{usuarios.usuFechaCreacion}" showOn="button" pattern="dd/MM/yyyy" navigator="true" >
+									  <f:convertDateTime  pattern="dd/MM/yyyy" timeZone="#{usuariosView.timeZone}" />	
+								    </p:calendar>		
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+					   						 
+						 <p:column filterBy="#{usuarios.usuFechaModifica}" sortBy="#{usuarios.usuFechaModifica}" 
+							headerText="usuFechaModifica">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{usuarios.usuFechaModifica}">
+									  <f:convertDateTime  pattern="dd/MM/yyyy"/>
+									</h:outputText>		
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:calendar value="#{usuarios.usuFechaModifica}" showOn="button" pattern="dd/MM/yyyy" navigator="true" >
+									  <f:convertDateTime  pattern="dd/MM/yyyy" timeZone="#{usuariosView.timeZone}" />	
+								    </p:calendar>		
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+					   											
+					<p:column headerText="Options" >
+						<p:rowEditor id="row"/>
+						<p:tooltip for="row" value="Edit" showEffect="fade" hideEffect="fade" />
+						<p:tooltip for="btnDelete" value="Delete" showEffect="fade" hideEffect="fade" />
+						<p:commandButton id="btnDelete" actionListener="#{usuariosView.actionDeleteDataTableEditable}" title="Delete" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" icon="ui-icon-trash" update=":form:msg,:form:tabla" >
+							<f:attribute name="selectedUsuarios" value="#{usuarios}" />  
+						</p:commandButton>
+						
+					</p:column>	
+				
+				</p:dataTable>	
+					
+				
+			</p:panel>
+				
+	   </h:form>
+		 </f:view>
+			</ui:define>		
+		</ui:composition>	
+	
+	</h:body>	
+	
+</html>	

@@ -1,0 +1,62 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>		
+	
+	<h:body>
+		<ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		<ui:define name="body">	
+		<f:view>
+			<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+			<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   				<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+			</p:dialog>
+			<h:form id="formDialog">
+				<p:messages id="msg" />
+				<p:growl id="men"/>
+					<p:panel id="panelRoles" header="Roles">							
+						<h:panelGrid columns="2" id="panelGrid" >
+												 	<h:outputText id="msgRolCodigo" value="RolCodigo"/>
+						 	<p:inputText id="txtRolCodigo" binding="#{rolesView.txtRolCodigo}">
+						 		<p:ajax update="panelRoles,msg,panelBotones" listener="#{rolesView.listener_txtId}"/>
+						 	</p:inputText>	
+																		
+													<h:outputText id="msgRolEstado" value=" RolEstado"/>
+							<p:inputText id="txtRolEstado" disabled="true" binding="#{rolesView.txtRolEstado}"/>
+													<h:outputText id="msgRolNombre" value=" RolNombre"/>
+							<p:inputText id="txtRolNombre" disabled="true" binding="#{rolesView.txtRolNombre}"/>
+													<h:outputText id="msgRolUsuCrea" value=" RolUsuCrea"/>
+							<p:inputText id="txtRolUsuCrea" disabled="true" binding="#{rolesView.txtRolUsuCrea}"/>
+													<h:outputText id="msgRolUsuModifica" value=" RolUsuModifica"/>
+							<p:inputText id="txtRolUsuModifica" disabled="true" binding="#{rolesView.txtRolUsuModifica}"/>
+												
+																				<h:outputText id="msgRolFechaCrea" value=" RolFechaCrea"/>
+														<p:calendar showOn="button" navigator="true" locale="en" 
+							binding="#{rolesView.txtRolFechaCrea}" >
+								<p:ajax event="dateSelect" listener="#{rolesView.listener_txtRolFechaCrea}"  />
+							</p:calendar>
+														<h:outputText id="msgRolFechaModifica" value=" RolFechaModifica"/>
+														<p:calendar showOn="button" navigator="true" locale="en" 
+							binding="#{rolesView.txtRolFechaModifica}" >
+								<p:ajax event="dateSelect" listener="#{rolesView.listener_txtRolFechaModifica}"  />
+							</p:calendar>
+																	   </h:panelGrid>
+				</p:panel>
+	   			<p:panel id="panelBotones">
+					<div align="center">					
+						<p:commandButton id="btnSave" binding="#{rolesView.btnSave}" disabled="true" value="Save" action="#{rolesView.action_save()}" update="panelRoles,msg,panelBotones" />
+						<p:commandButton id="btnDelete" binding="#{rolesView.btnDelete}" disabled="true" value="Delete" action="#{rolesView.action_delete_master()}" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" update="panelRoles,msg,panelBotones" />
+						<p:commandButton id="btnClear" value="Clear" action="#{rolesView.action_clear()}" update="panelRoles,msg,panelBotones" />
+					</div>
+				</p:panel>			
+			</h:form>
+		</f:view>
+			</ui:define>		
+		</ui:composition>	
+	</h:body>	
+</html>	

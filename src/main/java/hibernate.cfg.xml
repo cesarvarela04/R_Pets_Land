@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.password">postgres</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/petsland</property>
+        <property name="hibernate.connection.username">postgres</property>
+        <mapping resource="co/petsland/model/Roles.hbm.xml" />
+        <mapping resource="co/petsland/model/Sucursales.hbm.xml" />
+        <mapping resource="co/petsland/model/EventosVeterinarias.hbm.xml" />
+        <mapping resource="co/petsland/model/Servicios.hbm.xml" />
+        <mapping resource="co/petsland/model/Usuarios.hbm.xml" />
+        <mapping resource="co/petsland/model/Veterinarias.hbm.xml" />
+        <mapping resource="co/petsland/model/VetsServs.hbm.xml" />
+    </session-factory>
+</hibernate-configuration>

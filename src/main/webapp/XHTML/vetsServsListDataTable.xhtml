@@ -1,0 +1,110 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>
+
+	<h:body>
+		  <ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		 
+		 	<ui:define name="body">	
+				<f:view>
+					<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+					<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   						<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+					</p:dialog>
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTableVetsServs" header="VetsServsData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{vetsServsView.data}" var="vetsServs"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{vetsServs.vsCodigo}" sortBy="#{vetsServs.vsCodigo}" >
+										 <f:facet name="header">
+										<h:outputText value="vsCodigo"/>
+										</f:facet>
+										 <h:outputText value="#{vetsServs.vsCodigo}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{vetsServs.vsEstado}" sortBy="#{vetsServs.vsEstado}" >
+										 <f:facet name="header">
+										<h:outputText value="VsEstado"/>
+										</f:facet>
+										 <h:outputText value="#{vetsServs.vsEstado}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{vetsServs.serCodigo_Servicios}" sortBy="#{vetsServs.serCodigo_Servicios}" >
+										 <f:facet name="header">
+										<h:outputText value="SerCodigo_Servicios"/>
+										</f:facet>
+										 <h:outputText value="#{vetsServs.serCodigo_Servicios}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{vetsServs.vetCodigo_Veterinarias}" sortBy="#{vetsServs.vetCodigo_Veterinarias}" >
+										 <f:facet name="header">
+										<h:outputText value="VetCodigo_Veterinarias"/>
+										</f:facet>
+										 <h:outputText value="#{vetsServs.vetCodigo_Veterinarias}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogVetsServs"
+										actionListener="#{vetsServsView.action_edit}">
+										<f:attribute name="selectedVetsServs" value="#{vetsServs}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{vetsServsView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedVetsServs" value="#{vetsServs}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{vetsServsView.action_new()}" update=":dialogVetsServs" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogVetsServs" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{vetsServsView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelVetsServs" header="VetsServs">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgVsCodigo" value="VsCodigo"/>
+									 <p:inputText id="txtVsCodigo" binding="#{vetsServsView.txtVsCodigo}">
+									 <p:ajax update=":dialogVetsServs" listener="#{vetsServsView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgVsEstado" value=" VsEstado"/>
+									<p:inputText id="txtVsEstado" disabled="true" binding="#{vetsServsView.txtVsEstado}"/>
+																		<h:outputText id="msgSerCodigo_Servicios" value=" SerCodigo_Servicios"/>
+									<p:inputText id="txtSerCodigo_Servicios" disabled="true" binding="#{vetsServsView.txtSerCodigo_Servicios}"/>
+																		<h:outputText id="msgVetCodigo_Veterinarias" value=" VetCodigo_Veterinarias"/>
+									<p:inputText id="txtVetCodigo_Veterinarias" disabled="true" binding="#{vetsServsView.txtVetCodigo_Veterinarias}"/>
+																		
+																    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{vetsServsView.btnSave}" value="Save" action="#{vetsServsView.action_save()}" update=":dialogVetsServs :frm:panelDataTableVetsServs" />
+									<p:commandButton id="btnClear" value="Clear" action="#{vetsServsView.action_clear()}" update=":dialogVetsServs" />
+									<p:commandButton id="btnExit" value="Exit" action="#{vetsServsView.action_closeDialog()}" update=":dialogVetsServs" />
+								</div>
+							</p:panel>					
+						</h:form>
+					</p:dialog>
+				</f:view>
+			</ui:define>		
+		</ui:composition>	
+	</h:body>	
+</html>	

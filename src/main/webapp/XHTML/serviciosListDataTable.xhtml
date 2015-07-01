@@ -1,0 +1,119 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>
+
+	<h:body>
+		  <ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		 
+		 	<ui:define name="body">	
+				<f:view>
+					<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+					<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   						<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+					</p:dialog>
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTableServicios" header="ServiciosData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{serviciosView.data}" var="servicios"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{servicios.serCodigo}" sortBy="#{servicios.serCodigo}" >
+										 <f:facet name="header">
+										<h:outputText value="serCodigo"/>
+										</f:facet>
+										 <h:outputText value="#{servicios.serCodigo}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{servicios.serEstado}" sortBy="#{servicios.serEstado}" >
+										 <f:facet name="header">
+										<h:outputText value="SerEstado"/>
+										</f:facet>
+										 <h:outputText value="#{servicios.serEstado}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{servicios.serNombre}" sortBy="#{servicios.serNombre}" >
+										 <f:facet name="header">
+										<h:outputText value="SerNombre"/>
+										</f:facet>
+										 <h:outputText value="#{servicios.serNombre}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{servicios.serUsuCrea}" sortBy="#{servicios.serUsuCrea}" >
+										 <f:facet name="header">
+										<h:outputText value="SerUsuCrea"/>
+										</f:facet>
+										 <h:outputText value="#{servicios.serUsuCrea}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{servicios.serUsuModifica}" sortBy="#{servicios.serUsuModifica}" >
+										 <f:facet name="header">
+										<h:outputText value="SerUsuModifica"/>
+										</f:facet>
+										 <h:outputText value="#{servicios.serUsuModifica}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogServicios"
+										actionListener="#{serviciosView.action_edit}">
+										<f:attribute name="selectedServicios" value="#{servicios}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{serviciosView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedServicios" value="#{servicios}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{serviciosView.action_new()}" update=":dialogServicios" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogServicios" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{serviciosView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelServicios" header="Servicios">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgSerCodigo" value="SerCodigo"/>
+									 <p:inputText id="txtSerCodigo" binding="#{serviciosView.txtSerCodigo}">
+									 <p:ajax update=":dialogServicios" listener="#{serviciosView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgSerEstado" value=" SerEstado"/>
+									<p:inputText id="txtSerEstado" disabled="true" binding="#{serviciosView.txtSerEstado}"/>
+																		<h:outputText id="msgSerNombre" value=" SerNombre"/>
+									<p:inputText id="txtSerNombre" disabled="true" binding="#{serviciosView.txtSerNombre}"/>
+																		<h:outputText id="msgSerUsuCrea" value=" SerUsuCrea"/>
+									<p:inputText id="txtSerUsuCrea" disabled="true" binding="#{serviciosView.txtSerUsuCrea}"/>
+																		<h:outputText id="msgSerUsuModifica" value=" SerUsuModifica"/>
+									<p:inputText id="txtSerUsuModifica" disabled="true" binding="#{serviciosView.txtSerUsuModifica}"/>
+																		
+																    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{serviciosView.btnSave}" value="Save" action="#{serviciosView.action_save()}" update=":dialogServicios :frm:panelDataTableServicios" />
+									<p:commandButton id="btnClear" value="Clear" action="#{serviciosView.action_clear()}" update=":dialogServicios" />
+									<p:commandButton id="btnExit" value="Exit" action="#{serviciosView.action_closeDialog()}" update=":dialogServicios" />
+								</div>
+							</p:panel>					
+						</h:form>
+					</p:dialog>
+				</f:view>
+			</ui:define>		
+		</ui:composition>	
+	</h:body>	
+</html>	

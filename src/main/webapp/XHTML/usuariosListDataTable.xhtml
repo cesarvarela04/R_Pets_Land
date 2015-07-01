@@ -1,0 +1,170 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>
+
+	<h:body>
+		  <ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		 
+		 	<ui:define name="body">	
+				<f:view>
+					<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+					<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   						<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+					</p:dialog>
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTableUsuarios" header="UsuariosData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{usuariosView.data}" var="usuarios"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{usuarios.usuCodigo}" sortBy="#{usuarios.usuCodigo}" >
+										 <f:facet name="header">
+										<h:outputText value="usuCodigo"/>
+										</f:facet>
+										 <h:outputText value="#{usuarios.usuCodigo}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{usuarios.usuClave}" sortBy="#{usuarios.usuClave}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuClave"/>
+										</f:facet>
+										 <h:outputText value="#{usuarios.usuClave}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{usuarios.usuCrea}" sortBy="#{usuarios.usuCrea}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuCrea"/>
+										</f:facet>
+										 <h:outputText value="#{usuarios.usuCrea}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{usuarios.usuEmail}" sortBy="#{usuarios.usuEmail}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuEmail"/>
+										</f:facet>
+										 <h:outputText value="#{usuarios.usuEmail}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{usuarios.usuEstado}" sortBy="#{usuarios.usuEstado}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuEstado"/>
+										</f:facet>
+										 <h:outputText value="#{usuarios.usuEstado}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{usuarios.usuFechaCreacion}" sortBy="#{usuarios.usuFechaCreacion}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuFechaCreacion"/>
+										</f:facet>
+										 <h:outputText value="#{usuarios.usuFechaCreacion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{usuarios.usuFechaModifica}" sortBy="#{usuarios.usuFechaModifica}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuFechaModifica"/>
+										</f:facet>
+										 <h:outputText value="#{usuarios.usuFechaModifica}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{usuarios.usuModifica}" sortBy="#{usuarios.usuModifica}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuModifica"/>
+										</f:facet>
+										 <h:outputText value="#{usuarios.usuModifica}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{usuarios.usuNombre}" sortBy="#{usuarios.usuNombre}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuNombre"/>
+										</f:facet>
+										 <h:outputText value="#{usuarios.usuNombre}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{usuarios.rolCodigo_Roles}" sortBy="#{usuarios.rolCodigo_Roles}" >
+										 <f:facet name="header">
+										<h:outputText value="RolCodigo_Roles"/>
+										</f:facet>
+										 <h:outputText value="#{usuarios.rolCodigo_Roles}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogUsuarios"
+										actionListener="#{usuariosView.action_edit}">
+										<f:attribute name="selectedUsuarios" value="#{usuarios}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{usuariosView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedUsuarios" value="#{usuarios}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{usuariosView.action_new()}" update=":dialogUsuarios" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogUsuarios" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{usuariosView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelUsuarios" header="Usuarios">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgUsuCodigo" value="UsuCodigo"/>
+									 <p:inputText id="txtUsuCodigo" binding="#{usuariosView.txtUsuCodigo}">
+									 <p:ajax update=":dialogUsuarios" listener="#{usuariosView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgUsuClave" value=" UsuClave"/>
+									<p:inputText id="txtUsuClave" disabled="true" binding="#{usuariosView.txtUsuClave}"/>
+																		<h:outputText id="msgUsuCrea" value=" UsuCrea"/>
+									<p:inputText id="txtUsuCrea" disabled="true" binding="#{usuariosView.txtUsuCrea}"/>
+																		<h:outputText id="msgUsuEmail" value=" UsuEmail"/>
+									<p:inputText id="txtUsuEmail" disabled="true" binding="#{usuariosView.txtUsuEmail}"/>
+																		<h:outputText id="msgUsuEstado" value=" UsuEstado"/>
+									<p:inputText id="txtUsuEstado" disabled="true" binding="#{usuariosView.txtUsuEstado}"/>
+																		<h:outputText id="msgUsuModifica" value=" UsuModifica"/>
+									<p:inputText id="txtUsuModifica" disabled="true" binding="#{usuariosView.txtUsuModifica}"/>
+																		<h:outputText id="msgUsuNombre" value=" UsuNombre"/>
+									<p:inputText id="txtUsuNombre" disabled="true" binding="#{usuariosView.txtUsuNombre}"/>
+																		<h:outputText id="msgRolCodigo_Roles" value=" RolCodigo_Roles"/>
+									<p:inputText id="txtRolCodigo_Roles" disabled="true" binding="#{usuariosView.txtRolCodigo_Roles}"/>
+																		
+																													<h:outputText id="msgUsuFechaCreacion" value=" UsuFechaCreacion"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{usuariosView.txtUsuFechaCreacion}" >
+										<p:ajax event="dateSelect" listener="#{usuariosView.listener_txtUsuFechaCreacion}" />
+										</p:calendar>
+																				<h:outputText id="msgUsuFechaModifica" value=" UsuFechaModifica"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{usuariosView.txtUsuFechaModifica}" >
+										<p:ajax event="dateSelect" listener="#{usuariosView.listener_txtUsuFechaModifica}" />
+										</p:calendar>
+																										    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{usuariosView.btnSave}" value="Save" action="#{usuariosView.action_save()}" update=":dialogUsuarios :frm:panelDataTableUsuarios" />
+									<p:commandButton id="btnClear" value="Clear" action="#{usuariosView.action_clear()}" update=":dialogUsuarios" />
+									<p:commandButton id="btnExit" value="Exit" action="#{usuariosView.action_closeDialog()}" update=":dialogUsuarios" />
+								</div>
+							</p:panel>					
+						</h:form>
+					</p:dialog>
+				</f:view>
+			</ui:define>		
+		</ui:composition>	
+	</h:body>	
+</html>	

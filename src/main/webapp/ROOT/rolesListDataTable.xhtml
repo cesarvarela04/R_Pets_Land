@@ -1,0 +1,143 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>
+
+	<h:body>
+		  <ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		 
+		 	<ui:define name="body">	
+				<f:view>
+					<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+					<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   						<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+					</p:dialog>
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTableRoles" header="RolesData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{rolesView.data}" var="roles"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{roles.rolCodigo}" sortBy="#{roles.rolCodigo}" >
+										 <f:facet name="header">
+										<h:outputText value="rolCodigo"/>
+										</f:facet>
+										 <h:outputText value="#{roles.rolCodigo}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{roles.rolEstado}" sortBy="#{roles.rolEstado}" >
+										 <f:facet name="header">
+										<h:outputText value="RolEstado"/>
+										</f:facet>
+										 <h:outputText value="#{roles.rolEstado}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{roles.rolFechaCrea}" sortBy="#{roles.rolFechaCrea}" >
+										 <f:facet name="header">
+										<h:outputText value="RolFechaCrea"/>
+										</f:facet>
+										 <h:outputText value="#{roles.rolFechaCrea}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{roles.rolFechaModifica}" sortBy="#{roles.rolFechaModifica}" >
+										 <f:facet name="header">
+										<h:outputText value="RolFechaModifica"/>
+										</f:facet>
+										 <h:outputText value="#{roles.rolFechaModifica}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{roles.rolNombre}" sortBy="#{roles.rolNombre}" >
+										 <f:facet name="header">
+										<h:outputText value="RolNombre"/>
+										</f:facet>
+										 <h:outputText value="#{roles.rolNombre}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{roles.rolUsuCrea}" sortBy="#{roles.rolUsuCrea}" >
+										 <f:facet name="header">
+										<h:outputText value="RolUsuCrea"/>
+										</f:facet>
+										 <h:outputText value="#{roles.rolUsuCrea}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{roles.rolUsuModifica}" sortBy="#{roles.rolUsuModifica}" >
+										 <f:facet name="header">
+										<h:outputText value="RolUsuModifica"/>
+										</f:facet>
+										 <h:outputText value="#{roles.rolUsuModifica}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogRoles"
+										actionListener="#{rolesView.action_edit}">
+										<f:attribute name="selectedRoles" value="#{roles}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{rolesView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedRoles" value="#{roles}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{rolesView.action_new()}" update=":dialogRoles" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogRoles" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{rolesView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelRoles" header="Roles">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgRolCodigo" value="RolCodigo"/>
+									 <p:inputText id="txtRolCodigo" binding="#{rolesView.txtRolCodigo}">
+									 <p:ajax update=":dialogRoles" listener="#{rolesView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgRolEstado" value=" RolEstado"/>
+									<p:inputText id="txtRolEstado" disabled="true" binding="#{rolesView.txtRolEstado}"/>
+																		<h:outputText id="msgRolNombre" value=" RolNombre"/>
+									<p:inputText id="txtRolNombre" disabled="true" binding="#{rolesView.txtRolNombre}"/>
+																		<h:outputText id="msgRolUsuCrea" value=" RolUsuCrea"/>
+									<p:inputText id="txtRolUsuCrea" disabled="true" binding="#{rolesView.txtRolUsuCrea}"/>
+																		<h:outputText id="msgRolUsuModifica" value=" RolUsuModifica"/>
+									<p:inputText id="txtRolUsuModifica" disabled="true" binding="#{rolesView.txtRolUsuModifica}"/>
+																		
+																													<h:outputText id="msgRolFechaCrea" value=" RolFechaCrea"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{rolesView.txtRolFechaCrea}" >
+										<p:ajax event="dateSelect" listener="#{rolesView.listener_txtRolFechaCrea}" />
+										</p:calendar>
+																				<h:outputText id="msgRolFechaModifica" value=" RolFechaModifica"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{rolesView.txtRolFechaModifica}" >
+										<p:ajax event="dateSelect" listener="#{rolesView.listener_txtRolFechaModifica}" />
+										</p:calendar>
+																										    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{rolesView.btnSave}" value="Save" action="#{rolesView.action_save()}" update=":dialogRoles :frm:panelDataTableRoles" />
+									<p:commandButton id="btnClear" value="Clear" action="#{rolesView.action_clear()}" update=":dialogRoles" />
+									<p:commandButton id="btnExit" value="Exit" action="#{rolesView.action_closeDialog()}" update=":dialogRoles" />
+								</div>
+							</p:panel>					
+						</h:form>
+					</p:dialog>
+				</f:view>
+			</ui:define>		
+		</ui:composition>	
+	</h:body>	
+</html>	

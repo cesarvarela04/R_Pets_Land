@@ -1,0 +1,110 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>
+
+	<h:body>
+		  <ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		 
+		 	<ui:define name="body">	
+				<f:view>
+					<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+					<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   						<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+					</p:dialog>
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTableSucursales" header="SucursalesData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{sucursalesView.data}" var="sucursales"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{sucursales.sucCodigo}" sortBy="#{sucursales.sucCodigo}" >
+										 <f:facet name="header">
+										<h:outputText value="sucCodigo"/>
+										</f:facet>
+										 <h:outputText value="#{sucursales.sucCodigo}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{sucursales.sucDireccion}" sortBy="#{sucursales.sucDireccion}" >
+										 <f:facet name="header">
+										<h:outputText value="SucDireccion"/>
+										</f:facet>
+										 <h:outputText value="#{sucursales.sucDireccion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{sucursales.sucTelefono}" sortBy="#{sucursales.sucTelefono}" >
+										 <f:facet name="header">
+										<h:outputText value="SucTelefono"/>
+										</f:facet>
+										 <h:outputText value="#{sucursales.sucTelefono}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{sucursales.vetCodigo_Veterinarias}" sortBy="#{sucursales.vetCodigo_Veterinarias}" >
+										 <f:facet name="header">
+										<h:outputText value="VetCodigo_Veterinarias"/>
+										</f:facet>
+										 <h:outputText value="#{sucursales.vetCodigo_Veterinarias}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogSucursales"
+										actionListener="#{sucursalesView.action_edit}">
+										<f:attribute name="selectedSucursales" value="#{sucursales}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{sucursalesView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedSucursales" value="#{sucursales}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{sucursalesView.action_new()}" update=":dialogSucursales" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogSucursales" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{sucursalesView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelSucursales" header="Sucursales">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgSucCodigo" value="SucCodigo"/>
+									 <p:inputText id="txtSucCodigo" binding="#{sucursalesView.txtSucCodigo}">
+									 <p:ajax update=":dialogSucursales" listener="#{sucursalesView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgSucDireccion" value=" SucDireccion"/>
+									<p:inputText id="txtSucDireccion" disabled="true" binding="#{sucursalesView.txtSucDireccion}"/>
+																		<h:outputText id="msgSucTelefono" value=" SucTelefono"/>
+									<p:inputText id="txtSucTelefono" disabled="true" binding="#{sucursalesView.txtSucTelefono}"/>
+																		<h:outputText id="msgVetCodigo_Veterinarias" value=" VetCodigo_Veterinarias"/>
+									<p:inputText id="txtVetCodigo_Veterinarias" disabled="true" binding="#{sucursalesView.txtVetCodigo_Veterinarias}"/>
+																		
+																    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{sucursalesView.btnSave}" value="Save" action="#{sucursalesView.action_save()}" update=":dialogSucursales :frm:panelDataTableSucursales" />
+									<p:commandButton id="btnClear" value="Clear" action="#{sucursalesView.action_clear()}" update=":dialogSucursales" />
+									<p:commandButton id="btnExit" value="Exit" action="#{sucursalesView.action_closeDialog()}" update=":dialogSucursales" />
+								</div>
+							</p:panel>					
+						</h:form>
+					</p:dialog>
+				</f:view>
+			</ui:define>		
+		</ui:composition>	
+	</h:body>	
+</html>	

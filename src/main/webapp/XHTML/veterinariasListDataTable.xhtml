@@ -1,0 +1,146 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>
+
+	<h:body>
+		  <ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		 
+		 	<ui:define name="body">	
+				<f:view>
+					<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+					<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   						<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+					</p:dialog>
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTableVeterinarias" header="VeterinariasData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{veterinariasView.data}" var="veterinarias"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{veterinarias.vetCodigo}" sortBy="#{veterinarias.vetCodigo}" >
+										 <f:facet name="header">
+										<h:outputText value="vetCodigo"/>
+										</f:facet>
+										 <h:outputText value="#{veterinarias.vetCodigo}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{veterinarias.vetDireccion}" sortBy="#{veterinarias.vetDireccion}" >
+										 <f:facet name="header">
+										<h:outputText value="VetDireccion"/>
+										</f:facet>
+										 <h:outputText value="#{veterinarias.vetDireccion}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{veterinarias.vetEstado}" sortBy="#{veterinarias.vetEstado}" >
+										 <f:facet name="header">
+										<h:outputText value="VetEstado"/>
+										</f:facet>
+										 <h:outputText value="#{veterinarias.vetEstado}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{veterinarias.vetNombre}" sortBy="#{veterinarias.vetNombre}" >
+										 <f:facet name="header">
+										<h:outputText value="VetNombre"/>
+										</f:facet>
+										 <h:outputText value="#{veterinarias.vetNombre}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{veterinarias.vetTelefono}" sortBy="#{veterinarias.vetTelefono}" >
+										 <f:facet name="header">
+										<h:outputText value="VetTelefono"/>
+										</f:facet>
+										 <h:outputText value="#{veterinarias.vetTelefono}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{veterinarias.vetUrl}" sortBy="#{veterinarias.vetUrl}" >
+										 <f:facet name="header">
+										<h:outputText value="VetUrl"/>
+										</f:facet>
+										 <h:outputText value="#{veterinarias.vetUrl}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{veterinarias.vetUsuCrea}" sortBy="#{veterinarias.vetUsuCrea}" >
+										 <f:facet name="header">
+										<h:outputText value="VetUsuCrea"/>
+										</f:facet>
+										 <h:outputText value="#{veterinarias.vetUsuCrea}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{veterinarias.vetUsuModifica}" sortBy="#{veterinarias.vetUsuModifica}" >
+										 <f:facet name="header">
+										<h:outputText value="VetUsuModifica"/>
+										</f:facet>
+										 <h:outputText value="#{veterinarias.vetUsuModifica}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogVeterinarias"
+										actionListener="#{veterinariasView.action_edit}">
+										<f:attribute name="selectedVeterinarias" value="#{veterinarias}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{veterinariasView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedVeterinarias" value="#{veterinarias}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{veterinariasView.action_new()}" update=":dialogVeterinarias" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogVeterinarias" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{veterinariasView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelVeterinarias" header="Veterinarias">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgVetCodigo" value="VetCodigo"/>
+									 <p:inputText id="txtVetCodigo" binding="#{veterinariasView.txtVetCodigo}">
+									 <p:ajax update=":dialogVeterinarias" listener="#{veterinariasView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgVetDireccion" value=" VetDireccion"/>
+									<p:inputText id="txtVetDireccion" disabled="true" binding="#{veterinariasView.txtVetDireccion}"/>
+																		<h:outputText id="msgVetEstado" value=" VetEstado"/>
+									<p:inputText id="txtVetEstado" disabled="true" binding="#{veterinariasView.txtVetEstado}"/>
+																		<h:outputText id="msgVetNombre" value=" VetNombre"/>
+									<p:inputText id="txtVetNombre" disabled="true" binding="#{veterinariasView.txtVetNombre}"/>
+																		<h:outputText id="msgVetTelefono" value=" VetTelefono"/>
+									<p:inputText id="txtVetTelefono" disabled="true" binding="#{veterinariasView.txtVetTelefono}"/>
+																		<h:outputText id="msgVetUrl" value=" VetUrl"/>
+									<p:inputText id="txtVetUrl" disabled="true" binding="#{veterinariasView.txtVetUrl}"/>
+																		<h:outputText id="msgVetUsuCrea" value=" VetUsuCrea"/>
+									<p:inputText id="txtVetUsuCrea" disabled="true" binding="#{veterinariasView.txtVetUsuCrea}"/>
+																		<h:outputText id="msgVetUsuModifica" value=" VetUsuModifica"/>
+									<p:inputText id="txtVetUsuModifica" disabled="true" binding="#{veterinariasView.txtVetUsuModifica}"/>
+																		
+																    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{veterinariasView.btnSave}" value="Save" action="#{veterinariasView.action_save()}" update=":dialogVeterinarias :frm:panelDataTableVeterinarias" />
+									<p:commandButton id="btnClear" value="Clear" action="#{veterinariasView.action_clear()}" update=":dialogVeterinarias" />
+									<p:commandButton id="btnExit" value="Exit" action="#{veterinariasView.action_closeDialog()}" update=":dialogVeterinarias" />
+								</div>
+							</p:panel>					
+						</h:form>
+					</p:dialog>
+				</f:view>
+			</ui:define>		
+		</ui:composition>	
+	</h:body>	
+</html>	

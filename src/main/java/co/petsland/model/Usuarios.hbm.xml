@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 28/06/2015 09:53:52 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+	<class name="co.petsland.model.Usuarios" table="usuarios" schema="public">
+		<id name="usuCodigo" type="java.lang.Long">
+			<column name="usu_codigo" />
+			<generator class="sequence" />
+		</id>
+		<many-to-one name="roles" class="co.petsland.model.Roles"
+			fetch="select">
+			<column name="rol_codigo" not-null="true" />
+		</many-to-one>
+		<property name="usuNombre" type="java.lang.String">
+			<column name="usu_nombre" length="150" not-null="true" />
+		</property>
+		<property name="usuClave" type="java.lang.String">
+			<column name="usu_clave" length="150" not-null="true" />
+		</property>
+		<property name="usuEmail" type="java.lang.String">
+			<column name="usu_email" length="150" not-null="true" />
+		</property>
+		<property name="usuFechaCreacion" type="java.util.Date">
+			<column name="usu_fecha_creacion" length="13" not-null="true" />
+		</property>
+		<property name="usuFechaModifica" type="java.util.Date">
+			<column name="usu_fecha_modifica" length="13" />
+		</property>
+		<property name="usuCrea" type="java.lang.String">
+			<column name="usu_crea" length="150" not-null="true" />
+		</property>
+		<property name="usuModifica" type="java.lang.String">
+			<column name="usu_modifica" length="150" />
+		</property>
+		<property name="usuEstado" type="java.lang.String">
+			<column name="usu_estado" length="1" not-null="true" />
+		</property>
+		<set name="eventosVeterinariases" table="eventos_veterinarias"
+			inverse="true" lazy="true" fetch="select">
+			<key>
+				<column name="usu_codigo" not-null="true" />
+			</key>
+			<one-to-many class="co.petsland.model.EventosVeterinarias" />
+		</set>
+	</class>
+
+	<sql-query name="loginUsuario">
+
+		<return-scalar column="usuCodigo" type="java.lang.Long" />
+		<return-scalar column="usuEmail" type="java.lang.String" />
+		<return-scalar column="usuNombre" type="java.lang.String" />
+		<return-scalar column="rolCodigo_Roles" type="java.lang.Long" />
+        
+	  <![CDATA[SELECT u.usu_email AS usuEmail,
+	                  u.usu_Nombre AS usuNombre,
+	                  u.usu_Codigo AS usuCodigo,
+	                  u.rol_Codigo AS rolCodigo_Roles
+	             FROM Usuarios u
+                WHERE u.usu_Estado='A'
+                  AND u.usu_Email=:pCorreo
+                  AND u.usu_Clave=:pPass]]>
+	</sql-query>
+	
+	<sql-query name="existeUsuarioMail">
+
+		<return-scalar column="cont" type="java.lang.Long" />
+
+	<![CDATA[SELECT COUNT(*) cont
+                 FROM Usuarios usu
+                 WHERE usu.usu_email=:pCorreo]]>
+	</sql-query>
+
+	<sql-query name="consultarUsuarioXEmail">
+
+		<return-scalar column="usuCodigo" type="java.lang.Long" />
+		<return-scalar column="usuEmail" type="java.lang.String" />
+		<return-scalar column="usuNombre" type="java.lang.String" />
+		<return-scalar column="rolCodigo_Roles" type="java.lang.Long" />
+		<return-scalar column="rol" type="java.lang.String" />
+		<return-scalar column="usuClave" type="java.lang.String" />
+        
+	  <![CDATA[SELECT u.usu_email AS usuEmail,
+	                  u.usu_nombre AS usuNombre,
+	                  u.usu_codigo AS usuCodigo,
+	                  u.rol_codigo AS rolCodigo_Roles,
+	                  u.usu_clave AS usuClave,
+	                  rl.rol_nombre AS rol
+	             FROM Usuarios u
+     INNER JOIN Roles rl ON rl.rol_codigo = u.rol_codigo
+                WHERE u.usu_email=:pCorreo]]>
+
+	
+	</sql-query>
+	
+	<sql-query name="loginUsuario2">
+
+		<return-scalar column="usuNombre" type="java.lang.String" />
+
+        
+	  <![CDATA[SELECT u.usu_nombre AS usuNombre
+                 FROM Usuarios u
+                WHERE u.usu_estado = 'A'
+                  AND u.usu_email = :pCorreo]]>
+	</sql-query>
+
+</hibernate-mapping>

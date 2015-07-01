@@ -1,0 +1,143 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>
+
+	<h:body>
+		  <ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		 
+		 	<ui:define name="body">	
+				<f:view>
+					<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+					<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   						<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+					</p:dialog>
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTableEventosVeterinarias" header="EventosVeterinariasData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{eventosVeterinariasView.data}" var="eventosVeterinarias"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{eventosVeterinarias.evCodigo}" sortBy="#{eventosVeterinarias.evCodigo}" >
+										 <f:facet name="header">
+										<h:outputText value="evCodigo"/>
+										</f:facet>
+										 <h:outputText value="#{eventosVeterinarias.evCodigo}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{eventosVeterinarias.evFavorito}" sortBy="#{eventosVeterinarias.evFavorito}" >
+										 <f:facet name="header">
+										<h:outputText value="EvFavorito"/>
+										</f:facet>
+										 <h:outputText value="#{eventosVeterinarias.evFavorito}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{eventosVeterinarias.evFechaf}" sortBy="#{eventosVeterinarias.evFechaf}" >
+										 <f:facet name="header">
+										<h:outputText value="EvFechaf"/>
+										</f:facet>
+										 <h:outputText value="#{eventosVeterinarias.evFechaf}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{eventosVeterinarias.evFechamg}" sortBy="#{eventosVeterinarias.evFechamg}" >
+										 <f:facet name="header">
+										<h:outputText value="EvFechamg"/>
+										</f:facet>
+										 <h:outputText value="#{eventosVeterinarias.evFechamg}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{eventosVeterinarias.evMegusta}" sortBy="#{eventosVeterinarias.evMegusta}" >
+										 <f:facet name="header">
+										<h:outputText value="EvMegusta"/>
+										</f:facet>
+										 <h:outputText value="#{eventosVeterinarias.evMegusta}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{eventosVeterinarias.usuCodigo_Usuarios}" sortBy="#{eventosVeterinarias.usuCodigo_Usuarios}" >
+										 <f:facet name="header">
+										<h:outputText value="UsuCodigo_Usuarios"/>
+										</f:facet>
+										 <h:outputText value="#{eventosVeterinarias.usuCodigo_Usuarios}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{eventosVeterinarias.vetCodigo_Veterinarias}" sortBy="#{eventosVeterinarias.vetCodigo_Veterinarias}" >
+										 <f:facet name="header">
+										<h:outputText value="VetCodigo_Veterinarias"/>
+										</f:facet>
+										 <h:outputText value="#{eventosVeterinarias.vetCodigo_Veterinarias}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogEventosVeterinarias"
+										actionListener="#{eventosVeterinariasView.action_edit}">
+										<f:attribute name="selectedEventosVeterinarias" value="#{eventosVeterinarias}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{eventosVeterinariasView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedEventosVeterinarias" value="#{eventosVeterinarias}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{eventosVeterinariasView.action_new()}" update=":dialogEventosVeterinarias" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogEventosVeterinarias" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{eventosVeterinariasView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelEventosVeterinarias" header="EventosVeterinarias">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgEvCodigo" value="EvCodigo"/>
+									 <p:inputText id="txtEvCodigo" binding="#{eventosVeterinariasView.txtEvCodigo}">
+									 <p:ajax update=":dialogEventosVeterinarias" listener="#{eventosVeterinariasView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgEvFavorito" value=" EvFavorito"/>
+									<p:inputText id="txtEvFavorito" disabled="true" binding="#{eventosVeterinariasView.txtEvFavorito}"/>
+																		<h:outputText id="msgEvMegusta" value=" EvMegusta"/>
+									<p:inputText id="txtEvMegusta" disabled="true" binding="#{eventosVeterinariasView.txtEvMegusta}"/>
+																		<h:outputText id="msgUsuCodigo_Usuarios" value=" UsuCodigo_Usuarios"/>
+									<p:inputText id="txtUsuCodigo_Usuarios" disabled="true" binding="#{eventosVeterinariasView.txtUsuCodigo_Usuarios}"/>
+																		<h:outputText id="msgVetCodigo_Veterinarias" value=" VetCodigo_Veterinarias"/>
+									<p:inputText id="txtVetCodigo_Veterinarias" disabled="true" binding="#{eventosVeterinariasView.txtVetCodigo_Veterinarias}"/>
+																		
+																													<h:outputText id="msgEvFechaf" value=" EvFechaf"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{eventosVeterinariasView.txtEvFechaf}" >
+										<p:ajax event="dateSelect" listener="#{eventosVeterinariasView.listener_txtEvFechaf}" />
+										</p:calendar>
+																				<h:outputText id="msgEvFechamg" value=" EvFechamg"/>
+																				<p:calendar showOn="button" navigator="true" locale="en" 
+										binding="#{eventosVeterinariasView.txtEvFechamg}" >
+										<p:ajax event="dateSelect" listener="#{eventosVeterinariasView.listener_txtEvFechamg}" />
+										</p:calendar>
+																										    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{eventosVeterinariasView.btnSave}" value="Save" action="#{eventosVeterinariasView.action_save()}" update=":dialogEventosVeterinarias :frm:panelDataTableEventosVeterinarias" />
+									<p:commandButton id="btnClear" value="Clear" action="#{eventosVeterinariasView.action_clear()}" update=":dialogEventosVeterinarias" />
+									<p:commandButton id="btnExit" value="Exit" action="#{eventosVeterinariasView.action_closeDialog()}" update=":dialogEventosVeterinarias" />
+								</div>
+							</p:panel>					
+						</h:form>
+					</p:dialog>
+				</f:view>
+			</ui:define>		
+		</ui:composition>	
+	</h:body>	
+</html>	

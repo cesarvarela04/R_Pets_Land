@@ -1,0 +1,50 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>		
+	
+	<h:body>
+		<ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		<ui:define name="body">	
+		<f:view>
+			<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+			<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   				<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+			</p:dialog>
+			<h:form id="formDialog">
+				<p:messages id="msg" />
+				<p:growl id="men"/>
+					<p:panel id="panelSucursales" header="Sucursales">							
+						<h:panelGrid columns="2" id="panelGrid" >
+												 	<h:outputText id="msgSucCodigo" value="SucCodigo"/>
+						 	<p:inputText id="txtSucCodigo" binding="#{sucursalesView.txtSucCodigo}">
+						 		<p:ajax update="panelSucursales,msg,panelBotones" listener="#{sucursalesView.listener_txtId}"/>
+						 	</p:inputText>	
+																		
+													<h:outputText id="msgSucDireccion" value=" SucDireccion"/>
+							<p:inputText id="txtSucDireccion" disabled="true" binding="#{sucursalesView.txtSucDireccion}"/>
+													<h:outputText id="msgSucTelefono" value=" SucTelefono"/>
+							<p:inputText id="txtSucTelefono" disabled="true" binding="#{sucursalesView.txtSucTelefono}"/>
+													<h:outputText id="msgVetCodigo_Veterinarias" value=" VetCodigo_Veterinarias"/>
+							<p:inputText id="txtVetCodigo_Veterinarias" disabled="true" binding="#{sucursalesView.txtVetCodigo_Veterinarias}"/>
+												
+										   </h:panelGrid>
+				</p:panel>
+	   			<p:panel id="panelBotones">
+					<div align="center">					
+						<p:commandButton id="btnSave" binding="#{sucursalesView.btnSave}" disabled="true" value="Save" action="#{sucursalesView.action_save()}" update="panelSucursales,msg,panelBotones" />
+						<p:commandButton id="btnDelete" binding="#{sucursalesView.btnDelete}" disabled="true" value="Delete" action="#{sucursalesView.action_delete_master()}" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" update="panelSucursales,msg,panelBotones" />
+						<p:commandButton id="btnClear" value="Clear" action="#{sucursalesView.action_clear()}" update="panelSucursales,msg,panelBotones" />
+					</div>
+				</p:panel>			
+			</h:form>
+		</f:view>
+			</ui:define>		
+		</ui:composition>	
+	</h:body>	
+</html>	

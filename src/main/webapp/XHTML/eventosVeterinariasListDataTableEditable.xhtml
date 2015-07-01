@@ -1,0 +1,170 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>
+
+	<h:body>
+	    <ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		 
+		 	<ui:define name="body">	
+				<f:view>
+			<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+					<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   						<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+					</p:dialog>
+		 
+		 <h:form id="form">
+			
+			 
+			<p:panel id="msgProjectClientesTitle" header="EventosVeterinariasData">
+					<p:messages id="msg" />
+				<p:dataTable id ="tabla" value="#{eventosVeterinariasView.data}" var="eventosVeterinarias"
+					paginator="true" rows="5"  editable="true" >
+					 
+					 <p:ajax event ="rowEdit" update=":form:msg,:form:tabla" listener="#{eventosVeterinariasView.rowEventListener}" />
+					
+															<p:column filterBy="#{eventosVeterinarias.evCodigo}" sortBy="#{eventosVeterinarias.evCodigo}" headerText="evCodigo">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{eventosVeterinarias.evCodigo}"/>
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{eventosVeterinarias.evCodigo}"/>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+                    										
+											
+						<p:column filterBy="#{eventosVeterinarias.evFavorito}" sortBy="#{eventosVeterinarias.evFavorito}" 
+							headerText="evFavorito">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{eventosVeterinarias.evFavorito}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{eventosVeterinarias.evFavorito}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{eventosVeterinarias.evMegusta}" sortBy="#{eventosVeterinarias.evMegusta}" 
+							headerText="evMegusta">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{eventosVeterinarias.evMegusta}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{eventosVeterinarias.evMegusta}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{eventosVeterinarias.usuCodigo_Usuarios}" sortBy="#{eventosVeterinarias.usuCodigo_Usuarios}" 
+							headerText="usuCodigo_Usuarios">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{eventosVeterinarias.usuCodigo_Usuarios}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{eventosVeterinarias.usuCodigo_Usuarios}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{eventosVeterinarias.vetCodigo_Veterinarias}" sortBy="#{eventosVeterinarias.vetCodigo_Veterinarias}" 
+							headerText="vetCodigo_Veterinarias">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{eventosVeterinarias.vetCodigo_Veterinarias}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{eventosVeterinarias.vetCodigo_Veterinarias}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+										
+										   						 
+						 <p:column filterBy="#{eventosVeterinarias.evFechaf}" sortBy="#{eventosVeterinarias.evFechaf}" 
+							headerText="evFechaf">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{eventosVeterinarias.evFechaf}">
+									  <f:convertDateTime  pattern="dd/MM/yyyy"/>
+									</h:outputText>		
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:calendar value="#{eventosVeterinarias.evFechaf}" showOn="button" pattern="dd/MM/yyyy" navigator="true" >
+									  <f:convertDateTime  pattern="dd/MM/yyyy" timeZone="#{eventosVeterinariasView.timeZone}" />	
+								    </p:calendar>		
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+					   						 
+						 <p:column filterBy="#{eventosVeterinarias.evFechamg}" sortBy="#{eventosVeterinarias.evFechamg}" 
+							headerText="evFechamg">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{eventosVeterinarias.evFechamg}">
+									  <f:convertDateTime  pattern="dd/MM/yyyy"/>
+									</h:outputText>		
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:calendar value="#{eventosVeterinarias.evFechamg}" showOn="button" pattern="dd/MM/yyyy" navigator="true" >
+									  <f:convertDateTime  pattern="dd/MM/yyyy" timeZone="#{eventosVeterinariasView.timeZone}" />	
+								    </p:calendar>		
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+					   											
+					<p:column headerText="Options" >
+						<p:rowEditor id="row"/>
+						<p:tooltip for="row" value="Edit" showEffect="fade" hideEffect="fade" />
+						<p:tooltip for="btnDelete" value="Delete" showEffect="fade" hideEffect="fade" />
+						<p:commandButton id="btnDelete" actionListener="#{eventosVeterinariasView.actionDeleteDataTableEditable}" title="Delete" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" icon="ui-icon-trash" update=":form:msg,:form:tabla" >
+							<f:attribute name="selectedEventosVeterinarias" value="#{eventosVeterinarias}" />  
+						</p:commandButton>
+						
+					</p:column>	
+				
+				</p:dataTable>	
+					
+				
+			</p:panel>
+				
+	   </h:form>
+		 </f:view>
+			</ui:define>		
+		</ui:composition>	
+	
+	</h:body>	
+	
+</html>	

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head >
+
+	<meta charset="UTF-8" />
+	<title>PETSLAND || Modificar Usuario</title>
+	<meta
+		content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
+		name='viewport' />
+
+</h:head>
+
+<h:body class="skin-green" id="bodyt"   >
+	<ui:composition template="/ROOT/menuRoot.xhtml" id="bodyt" >
+		<ui:define name="body" id="bodyt"  >
+			<f:view >
+
+				<!-- Site wrapper -->
+				<div  style="min-height:100%">
+
+
+						<!-- Main content 
+						<section class="content">-->
+
+								<!-- Inicio Contenido Principal-->
+
+								<h:form id="form">
+									<p:messages id="msg" autoUpdate="true" />
+
+									<div class="panel panel-default" style="height:780px">
+
+										<div class="panel-heading" align="center"
+											style="font-family: sans-serif; font-size: 150%;">Modificar
+											Datos Usuario</div>
+
+										<div class="panel-body">
+
+											<p:outputLabel value="Nombre:" />
+											<p:inputText id="txtNombre" value="#{usuariosView.txtUsuNombre}"
+												class="form-control" />
+
+											<p:outputLabel value="Email:" />
+											<p:inputText id="txtEmail" value="#{usuariosView.txtUsuEmail}"
+												class="form-control">
+												<f:validateRegex
+													pattern="^[_A-Za-z0-9-\+\ñ\Ñ\á-ú\Á-Ú]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+											</p:inputText>
+
+											<p:outputLabel value="Clave:" />
+											<p:password id="txtClave" value="#{usuariosView.txtUsuClave}"
+												class="form-control" redisplay="true" />
+
+											<p:outputLabel value="Repetir Clave:" />
+											<p:password id="txtClave2" value="#{usuariosView.txtUsuClave}"
+												class="form-control" redisplay="true" />
+
+											<br />
+
+											<p:commandButton value="Modificar"
+												class="btn btn-primary btn-block"
+												action="#{usuariosView.modificarUsuario}" update="form"/>
+
+										</div>
+
+									</div>
+
+								</h:form>
+								<!-- Fin Contenido Principal
+
+						</section>-->
+
+					</div>
+
+				<!-- ./wrapper -->
+				
+			</f:view>
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 28/06/2015 09:53:52 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="co.petsland.model.EventosVeterinarias" table="eventos_veterinarias" schema="public">
+        <id name="evCodigo" type="java.lang.Long">
+            <column name="ev_codigo" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="usuarios" class="co.petsland.model.Usuarios" fetch="select">
+            <column name="usu_codigo" not-null="true" />
+        </many-to-one>
+        <many-to-one name="veterinarias" class="co.petsland.model.Veterinarias" fetch="select">
+            <column name="vet_codigo" not-null="true" />
+        </many-to-one>
+        <property name="evMegusta" type="java.lang.String">
+            <column name="ev_megusta" length="1" />
+        </property>
+        <property name="evFechamg" type="java.util.Date">
+            <column name="ev_fechamg" length="13" />
+        </property>
+        <property name="evFavorito" type="java.lang.String">
+            <column name="ev_favorito" length="1" />
+        </property>
+        <property name="evFechaf" type="java.util.Date">
+            <column name="ev_fechaf" length="13" />
+        </property>
+    </class>
+</hibernate-mapping>

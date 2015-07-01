@@ -1,0 +1,58 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>		
+	
+	<h:body>
+		<ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		<ui:define name="body">	
+		<f:view>
+			<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+			<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   				<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+			</p:dialog>
+			<h:form id="formDialog">
+				<p:messages id="msg" />
+				<p:growl id="men"/>
+					<p:panel id="panelVeterinarias" header="Veterinarias">							
+						<h:panelGrid columns="2" id="panelGrid" >
+												 	<h:outputText id="msgVetCodigo" value="VetCodigo"/>
+						 	<p:inputText id="txtVetCodigo" binding="#{veterinariasView.txtVetCodigo}">
+						 		<p:ajax update="panelVeterinarias,msg,panelBotones" listener="#{veterinariasView.listener_txtId}"/>
+						 	</p:inputText>	
+																		
+													<h:outputText id="msgVetDireccion" value=" VetDireccion"/>
+							<p:inputText id="txtVetDireccion" disabled="true" binding="#{veterinariasView.txtVetDireccion}"/>
+													<h:outputText id="msgVetEstado" value=" VetEstado"/>
+							<p:inputText id="txtVetEstado" disabled="true" binding="#{veterinariasView.txtVetEstado}"/>
+													<h:outputText id="msgVetNombre" value=" VetNombre"/>
+							<p:inputText id="txtVetNombre" disabled="true" binding="#{veterinariasView.txtVetNombre}"/>
+													<h:outputText id="msgVetTelefono" value=" VetTelefono"/>
+							<p:inputText id="txtVetTelefono" disabled="true" binding="#{veterinariasView.txtVetTelefono}"/>
+													<h:outputText id="msgVetUrl" value=" VetUrl"/>
+							<p:inputText id="txtVetUrl" disabled="true" binding="#{veterinariasView.txtVetUrl}"/>
+													<h:outputText id="msgVetUsuCrea" value=" VetUsuCrea"/>
+							<p:inputText id="txtVetUsuCrea" disabled="true" binding="#{veterinariasView.txtVetUsuCrea}"/>
+													<h:outputText id="msgVetUsuModifica" value=" VetUsuModifica"/>
+							<p:inputText id="txtVetUsuModifica" disabled="true" binding="#{veterinariasView.txtVetUsuModifica}"/>
+												
+										   </h:panelGrid>
+				</p:panel>
+	   			<p:panel id="panelBotones">
+					<div align="center">					
+						<p:commandButton id="btnSave" binding="#{veterinariasView.btnSave}" disabled="true" value="Save" action="#{veterinariasView.action_save()}" update="panelVeterinarias,msg,panelBotones" />
+						<p:commandButton id="btnDelete" binding="#{veterinariasView.btnDelete}" disabled="true" value="Delete" action="#{veterinariasView.action_delete_master()}" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" update="panelVeterinarias,msg,panelBotones" />
+						<p:commandButton id="btnClear" value="Clear" action="#{veterinariasView.action_clear()}" update="panelVeterinarias,msg,panelBotones" />
+					</div>
+				</p:panel>			
+			</h:form>
+		</f:view>
+			</ui:define>		
+		</ui:composition>	
+	</h:body>	
+</html>	

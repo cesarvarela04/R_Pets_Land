@@ -1,0 +1,178 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>
+
+	<h:body>
+	    <ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		 
+		 	<ui:define name="body">	
+				<f:view>
+			<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+					<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   						<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+					</p:dialog>
+		 
+		 <h:form id="form">
+			
+			 
+			<p:panel id="msgProjectClientesTitle" header="VeterinariasData">
+					<p:messages id="msg" />
+				<p:dataTable id ="tabla" value="#{veterinariasView.data}" var="veterinarias"
+					paginator="true" rows="5"  editable="true" >
+					 
+					 <p:ajax event ="rowEdit" update=":form:msg,:form:tabla" listener="#{veterinariasView.rowEventListener}" />
+					
+															<p:column filterBy="#{veterinarias.vetCodigo}" sortBy="#{veterinarias.vetCodigo}" headerText="vetCodigo">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{veterinarias.vetCodigo}"/>
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{veterinarias.vetCodigo}"/>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+                    										
+											
+						<p:column filterBy="#{veterinarias.vetDireccion}" sortBy="#{veterinarias.vetDireccion}" 
+							headerText="vetDireccion">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{veterinarias.vetDireccion}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{veterinarias.vetDireccion}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{veterinarias.vetEstado}" sortBy="#{veterinarias.vetEstado}" 
+							headerText="vetEstado">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{veterinarias.vetEstado}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{veterinarias.vetEstado}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{veterinarias.vetNombre}" sortBy="#{veterinarias.vetNombre}" 
+							headerText="vetNombre">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{veterinarias.vetNombre}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{veterinarias.vetNombre}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{veterinarias.vetTelefono}" sortBy="#{veterinarias.vetTelefono}" 
+							headerText="vetTelefono">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{veterinarias.vetTelefono}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{veterinarias.vetTelefono}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{veterinarias.vetUrl}" sortBy="#{veterinarias.vetUrl}" 
+							headerText="vetUrl">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{veterinarias.vetUrl}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{veterinarias.vetUrl}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{veterinarias.vetUsuCrea}" sortBy="#{veterinarias.vetUsuCrea}" 
+							headerText="vetUsuCrea">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{veterinarias.vetUsuCrea}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{veterinarias.vetUsuCrea}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{veterinarias.vetUsuModifica}" sortBy="#{veterinarias.vetUsuModifica}" 
+							headerText="vetUsuModifica">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{veterinarias.vetUsuModifica}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{veterinarias.vetUsuModifica}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+										
+											
+					<p:column headerText="Options" >
+						<p:rowEditor id="row"/>
+						<p:tooltip for="row" value="Edit" showEffect="fade" hideEffect="fade" />
+						<p:tooltip for="btnDelete" value="Delete" showEffect="fade" hideEffect="fade" />
+						<p:commandButton id="btnDelete" actionListener="#{veterinariasView.actionDeleteDataTableEditable}" title="Delete" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" icon="ui-icon-trash" update=":form:msg,:form:tabla" >
+							<f:attribute name="selectedVeterinarias" value="#{veterinarias}" />  
+						</p:commandButton>
+						
+					</p:column>	
+				
+				</p:dataTable>	
+					
+				
+			</p:panel>
+				
+	   </h:form>
+		 </f:view>
+			</ui:define>		
+		</ui:composition>	
+	
+	</h:body>	
+	
+</html>	
