@@ -55,7 +55,7 @@
 		</set>
 	</class>
 
-	<sql-query name="existeCategoria">
+	<sql-query name="existeVeterinaria">
 
 		<return-scalar column="cont" type="java.lang.Long" />
 

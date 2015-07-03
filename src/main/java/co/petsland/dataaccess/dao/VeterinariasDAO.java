@@ -52,6 +52,7 @@ public class VeterinariasDAO extends HibernateDaoImpl<Veterinarias, Long>
 		try {
 			Query query = getSession().getNamedQuery("existeVeterinaria");
 			query.setParameter("pNombre", nombre);
+			System.out.println("VetDao " + nombre );
 			List<Long> cantA = query.list();
 
 			if (cantA!=null) {

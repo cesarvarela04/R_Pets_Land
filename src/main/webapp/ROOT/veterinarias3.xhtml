@@ -82,13 +82,13 @@
 										<p:commandButton id="btonCrear" value="Crear"
 											action="#{veterinariasView.limpiar}"
 											styleClass="btn btn-success" icon="ui-icon-plus"
-											update=":formDlg2:txtNombre, :formDlg2:idEstado, :formDlg2:messages"
+											update=":formDlg2:txtNombre,  :formDlg2:txtTelefono, :formDlg2:txtDireccion, :formDlg2:idEstado, :formDlg2:messages"
 											onclick="$('#dlgModificar').modal('show');" />
 
 										<p:commandButton id="btonEditar" value="Editar"
 											action="#{veterinariasView.editar()}"
 											styleClass="btn btn-primary" icon="ui-icon-pencil"
-											update=":formDlg2:txtNombre, :formDlg2:idEstado, :formDlg2:messages"
+											update=":formDlg2:txtNombre, :formDlg2:txtTelefono, :formDlg2:txtDireccion, :formDlg2:idEstado, :formDlg2:messages"
 											binding="#{veterinariasView.btnModify}"
 											onclick="$('#dlgModificar').modal('show');" />
 
@@ -118,6 +118,16 @@
 											<h:outputText id="msgNombre" value=" Nombre: " />
 											<p:inputText id="txtNombre" type="text" class="form-control"
 												binding="#{veterinariasView.txtVetNombre}" />
+
+											<h:outputText id="msgTelefono" value=" Telefono: " />
+											<p:inputText id="txtTelefono" type="text"
+												class="form-control"
+												binding="#{veterinariasView.txtVetTelefono}" />
+
+											<h:outputText id="msgDireccion" value=" Direccion " />
+											<p:inputText id="txtDireccion" type="text"
+												class="form-control"
+												binding="#{veterinariasView.txtVetDireccion}" />
 
 											<h:outputText id="msgEstadoRegistro" value=" Estado: " />
 											<h:selectOneMenu id="idEstado"

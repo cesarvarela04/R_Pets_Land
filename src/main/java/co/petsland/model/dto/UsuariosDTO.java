@@ -1,10 +1,10 @@
 package co.petsland.model.dto;
 
 import java.io.Serializable;
-
 import java.sql.*;
-
 import java.util.Date;
+
+import javax.xml.bind.annotation.XmlRootElement;
 
 
 /**
@@ -13,6 +13,7 @@ import java.util.Date;
 * www.zathuracode.org
 *
 */
+@XmlRootElement(name="articulo")
 public class UsuariosDTO implements Serializable {
     private static final long serialVersionUID = 1L;
     private String usuClave;
