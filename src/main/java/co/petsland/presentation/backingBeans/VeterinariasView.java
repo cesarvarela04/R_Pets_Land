@@ -88,6 +88,14 @@ public class VeterinariasView implements Serializable {
 	public VeterinariasView() {
 		super();
 	}
+	
+	@PostConstruct
+    public void traerUsuarios(){
+		
+		usuario=(UsuariosDTO) FacesUtils.getManagedBeanFromSession("usuario");
+				
+    }
+	
 
 	/*
 	 * public void rowEventListener(RowEditEvent e) { try { VeterinariasDTO
@@ -223,13 +231,9 @@ public class VeterinariasView implements Serializable {
 	public String action_save() {
 		try {
 			if ((selectedVeterinarias == null) && (entity == null)) {
-				System.out.println("action_save() action_create();");
 				action_create();
-				System.out.println("action_save() action_create();");
 			} else {
-				System.out.println("action_save() action_modify();");
 				action_modify();
-				System.out.println("action_save() action_modify();");
 			}
 
 			data = null;
@@ -313,30 +317,30 @@ public class VeterinariasView implements Serializable {
 			if (btnModify.isDisabled() == false) {
 
 				entity = new Veterinarias();
+				
 				entity.setVetEstado(estado);
-				//entity.setFechaCreacion(new Date());
-				//entity.setFechaModifcacion(new Date());
-				entity.setVetNombre(FacesUtils.checkString(txtVetNombre));
+				entity.setVetTelefono(FacesUtils.checkString(txtVetTelefono));
+				entity.setVetDireccion(FacesUtils.checkString(txtVetDireccion));
 				entity.setVetUsuCrea(usuario.getUsuEmail());
-				//entity.getVetUsuModifica(usuario.getUsuEmail());
+				entity.setVetNombre(FacesUtils.checkString(txtVetNombre));
 				businessDelegatorView.saveVeterinarias(entity);				
-				FacesUtils.addInfoMessage("Se guardo con exito la categoria");
+				FacesUtils.addInfoMessage("Se guardo con exito la veterinaria");
 
 				
 			} else {
 
 				entity = new Veterinarias();
-				System.out.println("" + estado);
+				
 				entity.setVetCodigo(selectedVeterinarias.getVetCodigo());
 				entity.setVetEstado(estado);
-				// entity.setFechaCreacion(new Date());
-				// entity.setFechaModifcacion(new Date());
-				entity.setVetNombre(FacesUtils.checkString(txtVetNombre));
+				entity.setVetTelefono(FacesUtils.checkString(txtVetTelefono));
+				entity.setVetDireccion(FacesUtils.checkString(txtVetDireccion));
 				entity.setVetUsuCrea(usuario.getUsuEmail());
 				entity.setVetUsuModifica(usuario.getUsuEmail());
+				entity.setVetNombre(FacesUtils.checkString(txtVetNombre));
 				businessDelegatorView.updateVeterinarias(entity);
 
-				FacesUtils.addInfoMessage("Se modifico con exito la categoria");
+				FacesUtils.addInfoMessage("Se modifico con exito la veterinaria");
 
 			}
 			data = null;
@@ -582,7 +586,7 @@ public class VeterinariasView implements Serializable {
 		txtVetNombre.setValue("");
 		txtVetTelefono.setValue("");
 		txtVetDireccion.setValue("");
-		estado = "A";
+		estado = "R";
 
 		btnModify.setDisabled(false);
 
@@ -595,7 +599,7 @@ public class VeterinariasView implements Serializable {
 
 		if (selectedVeterinarias != null) {
 			txtVetNombre.setValue(selectedVeterinarias.getVetNombre());
-			txtVetTelefono.setValue(selectedVeterinarias.getVetNombre());
+			txtVetTelefono.setValue(selectedVeterinarias.getVetTelefono());
 			txtVetDireccion.setValue(selectedVeterinarias.getVetDireccion());
 			estado = selectedVeterinarias.getVetEstado();
 		} else {

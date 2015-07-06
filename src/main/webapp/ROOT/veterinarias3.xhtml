@@ -10,7 +10,7 @@
 <h:head>
 
 	<meta charset="UTF-8" />
-	<title>PETS LAND || VETERINARIAS</title>
+	<title>PETSLAND || Veterinarias</title>
 	<meta
 		content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
 		name='viewport' />
@@ -44,6 +44,14 @@
 
 										<p:column selectionMode="single" style="width:40px" />
 
+										<p:column filterBy="#{veterinaria.vetCodigo}"
+											sortBy="#{categoria.nombre}">
+											<f:facet name="header">
+												<h:outputText value="Codigo" />
+											</f:facet>
+											<h:outputText value="#{veterinaria.vetCodigo}" />
+										</p:column>
+
 										<p:column filterBy="#{veterinaria.vetNombre}"
 											sortBy="#{veterinaria.vetNombre}">
 											<f:facet name="header">
@@ -51,24 +59,19 @@
 											</f:facet>
 											<h:outputText value="#{veterinaria.vetNombre}" />
 										</p:column>
-										<p:column filterBy="#{veterinaria.vetDireccion}"
-											sortBy="#{veterinaria.vetDireccion}">
-											<f:facet name="header">
-												<h:outputText value="Direccion " />
-											</f:facet>
-											<h:outputText value="#{veterinaria.vetDireccion}" />
-										</p:column>
+
 										<p:column filterBy="#{veterinaria.vetTelefono}"
 											sortBy="#{veterinaria.vetTelefono}">
 											<f:facet name="header">
-												<h:outputText value="Telefono " />
+												<h:outputText value="Telefono Veterinaria" />
 											</f:facet>
 											<h:outputText value="#{veterinaria.vetTelefono}" />
 										</p:column>
+
 										<p:column filterBy="#{veterinaria.vetEstado}"
 											sortBy="#{veterinaria.vetEstado}">
 											<f:facet name="header">
-												<h:outputText value="Estado Registro" />
+												<h:outputText value="Estado" />
 											</f:facet>
 											<h:outputText value="#{veterinaria.vetEstado}" />
 										</p:column>
@@ -80,15 +83,15 @@
 									<div align="center">
 
 										<p:commandButton id="btonCrear" value="Crear"
-											action="#{veterinariasView.limpiar}"
+											action="#{veterinariasView.limpiar()}"
 											styleClass="btn btn-success" icon="ui-icon-plus"
-											update=":formDlg2:txtNombre,  :formDlg2:txtTelefono, :formDlg2:txtDireccion, :formDlg2:idEstado, :formDlg2:messages"
+											update=":formDlg2:txtNombre, :formDlg2:idEstado, :formDlg2:messages"
 											onclick="$('#dlgModificar').modal('show');" />
 
 										<p:commandButton id="btonEditar" value="Editar"
 											action="#{veterinariasView.editar()}"
 											styleClass="btn btn-primary" icon="ui-icon-pencil"
-											update=":formDlg2:txtNombre, :formDlg2:txtTelefono, :formDlg2:txtDireccion, :formDlg2:idEstado, :formDlg2:messages"
+											update=":formDlg2:txtNombre, :formDlg2:txtTelefono, :formDlg2:txtDireccion,  :formDlg2:idEstado, :formDlg2:messages"
 											binding="#{veterinariasView.btnModify}"
 											onclick="$('#dlgModificar').modal('show');" />
 
@@ -100,6 +103,7 @@
 
 						</h:form>
 
+						<!-- Inicio Dialogo Modificar -->
 						<h:form id="formDlg2">
 
 							<div class="modal fade" id="dlgModificar" tabindex="-1"
@@ -124,7 +128,7 @@
 												class="form-control"
 												binding="#{veterinariasView.txtVetTelefono}" />
 
-											<h:outputText id="msgDireccion" value=" Direccion " />
+											<h:outputText id="msgDireccion" value=" Direccion: " />
 											<p:inputText id="txtDireccion" type="text"
 												class="form-control"
 												binding="#{veterinariasView.txtVetDireccion}" />

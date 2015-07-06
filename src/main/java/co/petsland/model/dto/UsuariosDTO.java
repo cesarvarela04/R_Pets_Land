@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 * www.zathuracode.org
 *
 */
-@XmlRootElement(name="articulo")
+@XmlRootElement(name="veterinaria")
 public class UsuariosDTO implements Serializable {
     private static final long serialVersionUID = 1L;
     private String usuClave;
