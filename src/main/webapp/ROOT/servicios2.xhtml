@@ -10,7 +10,7 @@
 <h:head>
 
 	<meta charset="UTF-8" />
-	<title>PETSLAND || Veterinarias</title>
+	<title>PETSLAND || Servicios Veterinarias</title>
 	<meta
 		content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
 		name='viewport' />
@@ -37,43 +37,35 @@
 									style="font-family: sans-serif; font-size: 150%;">Veterinarias</div>
 
 								<div class="panel-body">
-									<p:dataTable value="#{veterinariasView.veterinariaDataModel}"
-										var="veterinaria"
-										selection="#{veterinariasView.selectedVeterinarias}"
+									<p:dataTable value="#{serviciosView.servicioDataModel}"
+										var="servicio"
+										selection="#{serviciosView.selectedServicios}"
 										id="tabla" paginator="true" rows="5">
 
 										<p:column selectionMode="single" style="width:40px" />
 
-										<p:column filterBy="#{veterinaria.vetCodigo}"
-											sortBy="#{veterinaria.vetCodigo}">
+										<p:column filterBy="#{servicio.serCodigo}"
+											sortBy="#{servicio.serCodigo}">
 											<f:facet name="header">
 												<h:outputText value="Codigo" />
 											</f:facet>
-											<h:outputText value="#{veterinaria.vetCodigo}" />
+											<h:outputText value="#{servicio.serCodigo}" />
 										</p:column>
 
-										<p:column filterBy="#{veterinaria.vetNombre}"
-											sortBy="#{veterinaria.vetNombre}">
+										<p:column filterBy="#{servicio.serNombre}"
+											sortBy="#{servicio.serNombre}">
 											<f:facet name="header">
-												<h:outputText value="Nombre Veterinaria" />
+												<h:outputText value="Nombre Servicio" />
 											</f:facet>
-											<h:outputText value="#{veterinaria.vetNombre}" />
+											<h:outputText value="#{servicio.serNombre}" />
 										</p:column>
 
-										<p:column filterBy="#{veterinaria.vetTelefono}"
-											sortBy="#{veterinaria.vetTelefono}">
-											<f:facet name="header">
-												<h:outputText value="Telefono Veterinaria" />
-											</f:facet>
-											<h:outputText value="#{veterinaria.vetTelefono}" />
-										</p:column>
-
-										<p:column filterBy="#{veterinaria.vetEstado}"
-											sortBy="#{veterinaria.vetEstado}">
+										<p:column filterBy="#{servicio.serEstado}"
+											sortBy="#{servicio.serEstado}">
 											<f:facet name="header">
 												<h:outputText value="Estado" />
 											</f:facet>
-											<h:outputText value="#{veterinaria.vetEstado}" />
+											<h:outputText value="#{servicio.serEstado}" />
 										</p:column>
 
 									</p:dataTable>
@@ -83,16 +75,16 @@
 									<div align="center">
 
 										<p:commandButton id="btonCrear" value="Crear"
-											action="#{veterinariasView.limpiar()}"
+											action="#{serviciosView.limpiar()}"
 											styleClass="btn btn-success" icon="ui-icon-plus"
 											update=":formDlg2:txtNombre, :formDlg2:idEstado, :formDlg2:messages"
 											onclick="$('#dlgModificar').modal('show');" />
 
 										<p:commandButton id="btonEditar" value="Editar"
-											action="#{veterinariasView.editar()}"
+											action="#{serviciosView.editar()}"
 											styleClass="btn btn-primary" icon="ui-icon-pencil"
-											update=":formDlg2:txtNombre, :formDlg2:txtTelefono, :formDlg2:txtDireccion,  :formDlg2:idEstado, :formDlg2:messages"
-											binding="#{veterinariasView.btnModify}"
+											update=":formDlg2:txtNombre, :formDlg2:idEstado, :formDlg2:messages"
+											binding="#{serviciosView.btnModify}"
 											onclick="$('#dlgModificar').modal('show');" />
 
 									</div>
@@ -113,7 +105,7 @@
 										<div class="modal-header">
 
 											<h4 class="modal-title" align="center">Crear/Modificar
-												Veterinarias</h4>
+												Servicios</h4>
 										</div>
 										<div class="modal-body" id="panelModificar">
 
@@ -121,22 +113,12 @@
 
 											<h:outputText id="msgNombre" value=" Nombre: " />
 											<p:inputText id="txtNombre" type="text" class="form-control"
-												binding="#{veterinariasView.txtVetNombre}" />
-
-											<h:outputText id="msgTelefono" value=" Telefono: " />
-											<p:inputText id="txtTelefono" type="text"
-												class="form-control"
-												binding="#{veterinariasView.txtVetTelefono}" />
-
-											<h:outputText id="msgDireccion" value=" Direccion: " />
-											<p:inputText id="txtDireccion" type="text"
-												class="form-control"
-												binding="#{veterinariasView.txtVetDireccion}" />
+												binding="#{serviciosView.txtSerNombre}" />
 
 											<h:outputText id="msgEstadoRegistro" value=" Estado: " />
 											<h:selectOneMenu id="idEstado"
 												class="form-control text-center"
-												value="#{veterinariasView.estado}">
+												value="#{serviciosView.estado}">
 												<f:selectItem itemLabel="Activo" itemValue="A" />
 												<f:selectItem itemLabel="Retirado" itemValue="R" />
 											</h:selectOneMenu>
@@ -145,13 +127,13 @@
 
 											<div align="center">
 												<p:commandButton id="btnSave"
-													binding="#{veterinariasView.btnSave}" value="Guardar"
+													binding="#{serviciosView.btnSave}" value="Guardar"
 													class="btn btn-primary"
-													action="#{veterinariasView.guardarVeterinaria()}"
+													action="#{serviciosView.guardarServicio()}"
 													update=":form, :form:tabla, :formDlg2:messages" />
 
 												<p:commandButton value="Cerrar" class="btn btn-danger"
-													action="#{veterinariasView.limpiar}"
+													action="#{serviciosView.limpiar}"
 													update=":form, formDlg2"
 													onclick="$('#dlgModificar').modal('hide');" />
 

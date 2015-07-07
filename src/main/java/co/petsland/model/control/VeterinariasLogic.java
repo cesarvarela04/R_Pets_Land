@@ -144,7 +144,7 @@ public class VeterinariasLogic implements IVeterinariasLogic {
             }
 
             entity.setVetNombre(entity.getVetNombre().toUpperCase());
-            System.out.println("VeterinariasLogic" + entity.getVetNombre().toUpperCase());
+            
             Long existe=existeVeterinaria(entity.getVetNombre());
             
             if(existe>=1){

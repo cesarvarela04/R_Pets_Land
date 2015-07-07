@@ -29,4 +29,14 @@
             <one-to-many class="co.petsland.model.VetsServs" />
         </set>
     </class>
+    
+    <sql-query name="existeServicio">
+
+		<return-scalar column="cont" type="java.lang.Long" />
+
+	<![CDATA[SELECT COUNT(*) cont
+                 FROM Servicios servs
+                 WHERE servs.ser_nombre=:pNombre]]>
+	</sql-query>
+    
 </hibernate-mapping>

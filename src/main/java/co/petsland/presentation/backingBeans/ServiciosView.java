@@ -1,33 +1,32 @@
 package co.petsland.presentation.backingBeans;
 
+import co.petsland.datamodel.ServiciosDataModel;
+import co.petsland.datamodel.VeterinariasDataModel;
 import co.petsland.exceptions.*;
-
 import co.petsland.model.*;
 import co.petsland.model.dto.ServiciosDTO;
-
+import co.petsland.model.dto.UsuariosDTO;
+import co.petsland.model.dto.VeterinariasDTO;
 import co.petsland.presentation.businessDelegate.*;
-
 import co.petsland.utilities.*;
 
 import org.primefaces.component.calendar.*;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
-
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 
 import java.io.Serializable;
-
 import java.sql.*;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -55,15 +54,106 @@ public class ServiciosView implements Serializable {
     private CommandButton btnDelete;
     private CommandButton btnClear;
     private List<ServiciosDTO> data;
+    private List<ServiciosDTO> listaServicios;
     private ServiciosDTO selectedServicios;
     private Servicios entity;
     private boolean showDialog;
+    private String estado;
+    private ServiciosDataModel servicioDataModel;
     @ManagedProperty(value = "#{BusinessDelegatorView}")
     private IBusinessDelegatorView businessDelegatorView;
+    private UsuariosDTO usuario;
 
     public ServiciosView() {
         super();
     }
+    
+	@PostConstruct
+    public void traerUsuarios(){
+		
+		usuario=(UsuariosDTO) FacesUtils.getManagedBeanFromSession("usuario");
+				
+    }
+	
+	public String limpiar() {
+
+		txtSerNombre.setValue("");
+		estado = "A";
+
+		btnModify.setDisabled(false);
+
+		return "";
+	}
+	
+	public String editar() {
+
+		btnModify.setDisabled(true);
+
+		if (selectedServicios != null) {
+			txtSerNombre.setValue(selectedServicios.getSerNombre());
+			estado = selectedServicios.getSerEstado();
+		} else {
+			FacesUtils
+					.addErrorMessage("No ha seleccionado ninguna servicio");
+		}
+
+		return "";
+	}
+	
+	public String guardarServicio() {
+
+		try {
+
+			if (btnModify.isDisabled() == false) {
+
+				entity = new Servicios();
+				
+				entity.setSerEstado(estado);
+				entity.setSerUsuCrea(usuario.getUsuEmail());
+				entity.setSerNombre(FacesUtils.checkString(txtSerNombre));
+				businessDelegatorView.saveServicios(entity);
+				FacesUtils.addInfoMessage("Se guardo con exito la veterinaria");
+
+				
+			} else {
+
+				entity = new Servicios();
+				
+				entity.setSerCodigo(selectedServicios.getSerCodigo());
+				entity.setSerEstado(estado);
+				entity.setSerUsuCrea(usuario.getUsuEmail());
+				entity.setSerUsuModifica(usuario.getUsuEmail());
+				entity.setSerNombre(FacesUtils.checkString(txtSerNombre));
+				businessDelegatorView.updateServicios(entity);
+
+				FacesUtils.addInfoMessage("Se modifico con exito la veterinaria");
+
+			}
+			data = null;
+
+			servicioDataModel = new ServiciosDataModel(getData());
+
+			RequestContext.getCurrentInstance().update("formDlg2");
+
+			try {
+				selectedServicios = data.get(0);
+			} catch (Exception e) {
+				FacesUtils.addErrorMessage(e.getMessage());
+				System.out.println("Exception e" + e);
+			}
+
+			limpiar();
+
+			RequestContext.getCurrentInstance().update("form:tabla");
+
+		} catch (Exception e) {
+			FacesUtils.addErrorMessage(e.getMessage());
+			System.out.println("e.getMessage()" + e.getMessage());
+		}
+
+		return "";
+
+	}
 
     public void rowEventListener(RowEditEvent e) {
         try {
@@ -468,4 +558,52 @@ public class ServiciosView implements Serializable {
     public void setShowDialog(boolean showDialog) {
         this.showDialog = showDialog;
     }
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public ServiciosDataModel getServicioDataModel() {
+		if (servicioDataModel == null) {
+			servicioDataModel = new ServiciosDataModel(getData());
+			try {
+				selectedServicios = data.get(0);
+			} catch (Exception e) {
+			}
+		}
+		return servicioDataModel;
+	}
+
+	public void setServicioDatamodel(ServiciosDataModel servicioDataModel) {
+		this.servicioDataModel = servicioDataModel;
+	}
+
+	public List<ServiciosDTO> getListaServicios() {
+		try {
+			if(listaServicios==null){
+				listaServicios=businessDelegatorView.getDataServicios();	
+			}
+			
+		} catch (Exception e) {
+			
+		}
+
+		return listaServicios;
+	}
+
+	public void setListaServicios(List<ServiciosDTO> listaServicios) {
+		this.listaServicios = listaServicios;
+	}
+
+	public void setServicioDataModel(ServiciosDataModel servicioDataModel) {
+		this.servicioDataModel = servicioDataModel;
+	}
+	
+	
+    
+    
 }

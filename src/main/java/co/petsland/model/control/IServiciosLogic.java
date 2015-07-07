@@ -4,11 +4,7 @@ import co.petsland.model.Servicios;
 import co.petsland.model.dto.ServiciosDTO;
 
 import java.math.BigDecimal;
-
 import java.util.*;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -53,4 +49,6 @@ public interface IServiciosLogic {
     public Long findTotalNumberServicios() throws Exception;
 
     public List<ServiciosDTO> getDataServicios() throws Exception;
+    
+    public Long existeServicio(String nombre) throws Exception;
 }

@@ -19,27 +19,29 @@
 			<h:form id="formDialog">
 				<p:messages id="msg" />
 				<p:growl id="men"/>
-					<p:panel id="panelVetsServs" header="VetsServs">							
+					<p:panel id="panelServicios" header="Servicios">							
 						<h:panelGrid columns="2" id="panelGrid" >
-												 	<h:outputText id="msgVsCodigo" value="VsCodigo"/>
-						 	<p:inputText id="txtVsCodigo" binding="#{vetsServsView.txtVsCodigo}">
-						 		<p:ajax update="panelVetsServs,msg,panelBotones" listener="#{vetsServsView.listener_txtId}"/>
+												 	<h:outputText id="msgSerCodigo" value="SerCodigo"/>
+						 	<p:inputText id="txtSerCodigo" binding="#{serviciosView.txtSerCodigo}">
+						 		<p:ajax update="panelServicios,msg,panelBotones" listener="#{serviciosView.listener_txtId}"/>
 						 	</p:inputText>	
 																		
-													<h:outputText id="msgVsEstado" value=" VsEstado"/>
-							<p:inputText id="txtVsEstado" disabled="true" binding="#{vetsServsView.txtVsEstado}"/>
-													<h:outputText id="msgSerCodigo_Servicios" value=" SerCodigo_Servicios"/>
-							<p:inputText id="txtSerCodigo_Servicios" disabled="true" binding="#{vetsServsView.txtSerCodigo_Servicios}"/>
-													<h:outputText id="msgVetCodigo_Veterinarias" value=" VetCodigo_Veterinarias"/>
-							<p:inputText id="txtVetCodigo_Veterinarias" disabled="true" binding="#{vetsServsView.txtVetCodigo_Veterinarias}"/>
+													<h:outputText id="msgSerEstado" value=" SerEstado"/>
+							<p:inputText id="txtSerEstado" disabled="true" binding="#{serviciosView.txtSerEstado}"/>
+													<h:outputText id="msgSerNombre" value=" SerNombre"/>
+							<p:inputText id="txtSerNombre" disabled="true" binding="#{serviciosView.txtSerNombre}"/>
+													<h:outputText id="msgSerUsuCrea" value=" SerUsuCrea"/>
+							<p:inputText id="txtSerUsuCrea" disabled="true" binding="#{serviciosView.txtSerUsuCrea}"/>
+													<h:outputText id="msgSerUsuModifica" value=" SerUsuModifica"/>
+							<p:inputText id="txtSerUsuModifica" disabled="true" binding="#{serviciosView.txtSerUsuModifica}"/>
 												
 										   </h:panelGrid>
 				</p:panel>
 	   			<p:panel id="panelBotones">
 					<div align="center">					
-						<p:commandButton id="btnSave" binding="#{vetsServsView.btnSave}" disabled="true" value="Save" action="#{vetsServsView.action_save()}" update="panelVetsServs,msg,panelBotones" />
-						<p:commandButton id="btnDelete" binding="#{vetsServsView.btnDelete}" disabled="true" value="Delete" action="#{vetsServsView.action_delete_master()}" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" update="panelVetsServs,msg,panelBotones" />
-						<p:commandButton id="btnClear" value="Clear" action="#{vetsServsView.action_clear()}" update="panelVetsServs,msg,panelBotones" />
+						<p:commandButton id="btnSave" binding="#{serviciosView.btnSave}" disabled="true" value="Save" action="#{serviciosView.action_save()}" update="panelServicios,msg,panelBotones" />
+						<p:commandButton id="btnDelete" binding="#{serviciosView.btnDelete}" disabled="true" value="Delete" action="#{serviciosView.action_delete_master()}" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" update="panelServicios,msg,panelBotones" />
+						<p:commandButton id="btnClear" value="Clear" action="#{serviciosView.action_clear()}" update="panelServicios,msg,panelBotones" />
 					</div>
 				</p:panel>			
 			</h:form>

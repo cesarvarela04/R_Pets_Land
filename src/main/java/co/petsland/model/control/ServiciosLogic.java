@@ -1,25 +1,18 @@
 package co.petsland.model.control;
 
 import co.petsland.dataaccess.dao.*;
-
 import co.petsland.exceptions.*;
-
 import co.petsland.model.*;
 import co.petsland.model.dto.ServiciosDTO;
-
 import co.petsland.utilities.Utilities;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.context.annotation.Scope;
-
 import org.springframework.stereotype.Service;
-
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -66,41 +59,38 @@ public class ServiciosLogic implements IServiciosLogic {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void saveServicios(Servicios entity) throws Exception {
         try {
-            if (entity.getSerCodigo() == null) {
-                throw new ZMessManager().new EmptyFieldException("serCodigo");
-            }
 
             if (entity.getSerEstado() == null) {
-                throw new ZMessManager().new EmptyFieldException("serEstado");
+            	throw new Exception(
+                        "El Estado no puede estar nulo");
             }
 
             if ((entity.getSerEstado() != null) &&
                     (Utilities.checkWordAndCheckWithlength(
                         entity.getSerEstado(), 1) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "serEstado");
+            	throw new Exception(
+                        "El Estado Registro no puede tener mas de 1 caracter");
             }
 
             if (entity.getSerNombre() == null) {
-                throw new ZMessManager().new EmptyFieldException("serNombre");
+            	throw new Exception("El nombre del servicio no puede estar nulo");
             }
 
             if ((entity.getSerNombre() != null) &&
                     (Utilities.checkWordAndCheckWithlength(
                         entity.getSerNombre(), 150) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "serNombre");
+            	throw new Exception(
+                        "El nombre del servicio no puede tener mas de 150 caracter");
             }
 
             if (entity.getSerUsuCrea() == null) {
-                throw new ZMessManager().new EmptyFieldException("serUsuCrea");
+            	throw new Exception("El usuario Creador no puede estar nulo");
             }
 
             if ((entity.getSerUsuCrea() != null) &&
                     (Utilities.checkWordAndCheckWithlength(
                         entity.getSerUsuCrea(), 150) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "serUsuCrea");
+            	throw new Exception("El Usuario Creador no puede tenes mas de 150 caracteres");
             }
 
             if ((entity.getSerUsuModifica() != null) &&
@@ -110,10 +100,18 @@ public class ServiciosLogic implements IServiciosLogic {
                     "serUsuModifica");
             }
 
-            if (getServicios(entity.getSerCodigo()) != null) {
+           /* if (getServicios(entity.getSerCodigo()) != null) {
                 throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
+            }*/
 
+            entity.setSerNombre(entity.getSerNombre().toUpperCase());
+            
+            Long existe=existeServicio(entity.getSerNombre());
+            
+            if(existe>=1){
+            	throw new Exception("Ya existe el servicio ingresada");
+            }
+            
             serviciosDAO.save(entity);
         } catch (Exception e) {
             throw e;
@@ -121,7 +119,10 @@ public class ServiciosLogic implements IServiciosLogic {
         }
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+
+
+
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void deleteServicios(Servicios entity) throws Exception {
         if (entity == null) {
             throw new ZMessManager().new NullEntityExcepcion("Servicios");
@@ -151,23 +152,24 @@ public class ServiciosLogic implements IServiciosLogic {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void updateServicios(Servicios entity) throws Exception {
         try {
-            if (entity == null) {
+            /*if (entity == null) {
                 throw new ZMessManager().new NullEntityExcepcion("Servicios");
-            }
+            }*/
 
             if (entity.getSerCodigo() == null) {
-                throw new ZMessManager().new EmptyFieldException("serCodigo");
+            	throw new Exception("El codigo del servicio no puede estar nulo");
             }
 
             if (entity.getSerEstado() == null) {
-                throw new ZMessManager().new EmptyFieldException("serEstado");
+            	throw new Exception(
+                        "El EstadoRegistro no puede estar nulo");
             }
 
             if ((entity.getSerEstado() != null) &&
                     (Utilities.checkWordAndCheckWithlength(
                         entity.getSerEstado(), 1) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "serEstado");
+            	 throw new Exception(
+                         "El Estado Registro no puede tener mas de 1 caracter");
             }
 
             if (entity.getSerNombre() == null) {
@@ -177,29 +179,29 @@ public class ServiciosLogic implements IServiciosLogic {
             if ((entity.getSerNombre() != null) &&
                     (Utilities.checkWordAndCheckWithlength(
                         entity.getSerNombre(), 150) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "serNombre");
+            	 throw new Exception(
+                         "El Estado Registro no puede tener mas de 150 caracter");
             }
 
-            if (entity.getSerUsuCrea() == null) {
+            /*if (entity.getSerUsuCrea() == null) {
                 throw new ZMessManager().new EmptyFieldException("serUsuCrea");
             }
 
             if ((entity.getSerUsuCrea() != null) &&
                     (Utilities.checkWordAndCheckWithlength(
                         entity.getSerUsuCrea(), 150) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "serUsuCrea");
-            }
+            	 throw new Exception(
+                         "El Usuario Creador no puede tener mas de 150 caracter");
+            }*/
 
             if ((entity.getSerUsuModifica() != null) &&
                     (Utilities.checkWordAndCheckWithlength(
                         entity.getSerUsuModifica(), 150) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "serUsuModifica");
+            	 throw new Exception(
+                         "El Usuario Modificador no puede tener mas de 150 caracter");
             }
 
-            serviciosDAO.update(entity);
+            serviciosDAO.merge(entity);
         } catch (Exception e) {
             throw e;
         } finally {
@@ -445,4 +447,10 @@ public class ServiciosLogic implements IServiciosLogic {
 
         return list;
     }
+    
+    @Transactional(readOnly = true)
+	@Override
+	public Long existeServicio(String nombre) throws Exception {
+    	return serviciosDAO.existeServicios(nombre);
+	}
 }
