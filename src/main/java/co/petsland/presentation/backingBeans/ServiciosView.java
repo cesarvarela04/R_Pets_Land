@@ -70,11 +70,39 @@ public class ServiciosView implements Serializable {
     
 	@PostConstruct
     public void traerUsuarios(){
-		
 		usuario=(UsuariosDTO) FacesUtils.getManagedBeanFromSession("usuario");
-				
+		
     }
 	
+    
+    
+    // ++
+    
+	private String[] selectedCities;
+	
+	
+	public String[] getSelectedCities() {
+        return selectedCities;
+    }
+ 
+    public void setSelectedCities(String[] selectedCities) {
+        this.selectedCities = selectedCities;
+    }
+   
+    
+    // ++
+    
+  
+    
+    
+
+    
+    
+
+
+
+
+
 	public String limpiar() {
 
 		txtSerNombre.setValue("");

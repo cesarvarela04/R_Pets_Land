@@ -66,84 +66,84 @@ public class UsuariosLogic implements IUsuariosLogic {
 	public void saveUsuarios(Usuarios entity) throws Exception {
 		try {
 			if (entity.getRoles() == null) {
-				throw new ZMessManager().new ForeignException("roles");
+				throw new Exception("El rol no puede ser nulo");
 			}
 
 			if (entity.getUsuClave() == null) {
-				throw new ZMessManager().new EmptyFieldException("usuClave");
+				throw new Exception("La clave no puede ser nula");
 			}
 
 			if ((entity.getUsuClave() != null)
 					&& (Utilities.checkWordAndCheckWithlength(
 							entity.getUsuClave(), 150) == false)) {
-				throw new ZMessManager().new NotValidFormatException("usuClave");
-			}
-
-			if (entity.getUsuCodigo() == null) {
-				throw new ZMessManager().new EmptyFieldException("usuCodigo");
+				throw new Exception(
+						"La clave no puede tener mas de 150 caracteres");
 			}
 
 			if (entity.getUsuCrea() == null) {
-				throw new ZMessManager().new EmptyFieldException("usuCrea");
+				throw new Exception("El usuario no puede ser nulo");
 			}
 
 			if ((entity.getUsuCrea() != null)
 					&& (Utilities.checkWordAndCheckWithlength(
 							entity.getUsuCrea(), 150) == false)) {
-				throw new ZMessManager().new NotValidFormatException("usuCrea");
+				throw new Exception(
+						"El usuario no puede tener mas de 150 caracteres");
 			}
 
 			if (entity.getUsuEmail() == null) {
-				throw new ZMessManager().new EmptyFieldException("usuEmail");
+				throw new Exception("El Email no puede ser nulo");
 			}
 
 			if ((entity.getUsuEmail() != null)
 					&& (Utilities.checkWordAndCheckWithlength(
 							entity.getUsuEmail(), 150) == false)) {
-				throw new ZMessManager().new NotValidFormatException("usuEmail");
+				throw new Exception(
+						"El Email no puede tener mas de 150 caracteres");
 			}
 
 			if (entity.getUsuEstado() == null) {
-				throw new ZMessManager().new EmptyFieldException("usuEstado");
+				throw new Exception("El estado no puede ser nulo");
 			}
 
 			if ((entity.getUsuEstado() != null)
 					&& (Utilities.checkWordAndCheckWithlength(
 							entity.getUsuEstado(), 1) == false)) {
-				throw new ZMessManager().new NotValidFormatException(
-						"usuEstado");
+				throw new Exception(
+						"El Email no puede tener mas de 1 caracterer");
 			}
 
 			if (entity.getUsuFechaCreacion() == null) {
-				throw new ZMessManager().new EmptyFieldException(
-						"usuFechaCreacion");
+				throw new Exception("La Fecha Creacion no puede estar vacia");
 			}
 
 			if ((entity.getUsuModifica() != null)
 					&& (Utilities.checkWordAndCheckWithlength(
 							entity.getUsuModifica(), 150) == false)) {
-				throw new ZMessManager().new NotValidFormatException(
-						"usuModifica");
+				throw new Exception(
+						"El Usuario Modifica no puede tener mas de 150 caracteres");
 			}
 
 			if (entity.getUsuNombre() == null) {
-				throw new ZMessManager().new EmptyFieldException("usuNombre");
+				throw new Exception("El Nombre no puede ser nulo");
 			}
 
 			if ((entity.getUsuNombre() != null)
 					&& (Utilities.checkWordAndCheckWithlength(
 							entity.getUsuNombre(), 150) == false)) {
-				throw new ZMessManager().new NotValidFormatException(
-						"usuNombre");
+				throw new Exception( "El Nombre no puede tener mas de 150 caracteres");
 			}
 
 			if (entity.getRoles().getRolCodigo() == null) {
-				throw new ZMessManager().new EmptyFieldException(
-						"rolCodigo_Roles");
+				throw new Exception("El rol no puede estar vacio");
 			}
 
-			if (getUsuarios(entity.getUsuCodigo()) != null) {
-				throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
+			entity.setUsuEmail(entity.getUsuEmail().toLowerCase());
+
+			Long existe = existeCorreo(entity.getUsuEmail());
+
+			if (existe >= 1) {
+				throw new Exception("Ya Existe el correo ingresado");
 			}
 
 			usuariosDAO.save(entity);
@@ -151,6 +151,13 @@ public class UsuariosLogic implements IUsuariosLogic {
 			throw e;
 		} finally {
 		}
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public Long existeCorreo(String correo) throws Exception {
+
+		return usuariosDAO.existeCorreo(correo);
 	}
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)

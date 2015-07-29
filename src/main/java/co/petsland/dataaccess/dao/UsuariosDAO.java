@@ -105,4 +105,22 @@ public class UsuariosDAO extends HibernateDaoImpl<Usuarios, Long> implements
 		return usuario;
 	}
 
+	@Override
+	public Long existeCorreo(String correo) throws Exception {
+		Long exiten = 0L;
+		try {
+			Query query = getSession().getNamedQuery("existeUsuarioMail");
+			query.setParameter("pCorreo", correo);
+			List<Long> cantA = query.list();
+
+			if (cantA!=null) {
+				exiten=cantA.get(0);
+			}
+			
+		} catch (Exception e) {
+			throw e;
+		}
+		return exiten;
+	}
+
 }

@@ -91,6 +91,49 @@ public class UsuariosView implements Serializable {
 
 	}
 	
+	
+	public String registroUsuario() {
+
+		try {
+			
+			Roles rol = businessDelegatorView.getRoles(2L);
+
+			entity = new Usuarios();
+			entity.setUsuNombre(txtUsuNombre);
+			entity.setUsuClave(txtUsuClave);
+			entity.setUsuEmail(txtUsuEmail);
+			entity.setUsuFechaCreacion(new Date());
+			entity.setUsuFechaModifica(new Date());
+			entity.setUsuCrea("ROOT");
+			entity.setUsuModifica("ROOT");
+			entity.setUsuEstado("A");
+			entity.setRoles(rol);
+
+			if (txtUsuClave.equals(txtUsuClave2)) {
+
+			} else {
+				throw new Exception("No coincide la contraseña ingresada");
+			}
+
+			businessDelegatorView.saveUsuarios(entity);
+			
+			//EmailController mail=new EmailController();
+			//String subject="Registro Exitoso en el sistema PETSLAND";
+			//String messageBody="Bienvenido USER <br>  Usuario: " + txtEmail +" <br> Password:" + txtClave;
+			//mail.performTask(txtEmail, subject, messageBody, null);
+			
+			FacesUtils.addInfoMessage("Registro Exitoso");
+			
+			
+
+		} catch (Exception e) {
+			FacesUtils.addErrorMessage(e.getMessage());
+		}
+
+		return "";
+	}
+	
+	
 	public String modificarUsuario() {
 		try {
 
@@ -529,6 +572,14 @@ public class UsuariosView implements Serializable {
 
 	public void setTxtUsuClave(String txtUsuClave) {
 		this.txtUsuClave = txtUsuClave;
+	}
+	
+	public String getTxtUsuClave2() {
+		return txtUsuClave2;
+	}
+
+	public void setTxtUsuClave2(String txtUsuClave2) {
+		this.txtUsuClave2 = txtUsuClave2;
 	}
 
 	public InputText getTxtUsuCrea() {

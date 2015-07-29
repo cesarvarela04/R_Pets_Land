@@ -1,52 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-	
-	<h:head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-	</h:head>		
-	
-	<h:body>
-		<ui:composition template="/WEB-INF/facelets/template.xhtml">	
-		<ui:define name="body">	
-		<f:view>
-			<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
-			<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
-   				<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
-			</p:dialog>
-			<h:form id="formDialog">
-				<p:messages id="msg" />
-				<p:growl id="men"/>
-					<p:panel id="panelServicios" header="Servicios">							
-						<h:panelGrid columns="2" id="panelGrid" >
-												 	<h:outputText id="msgSerCodigo" value="SerCodigo"/>
-						 	<p:inputText id="txtSerCodigo" binding="#{serviciosView.txtSerCodigo}">
-						 		<p:ajax update="panelServicios,msg,panelBotones" listener="#{serviciosView.listener_txtId}"/>
-						 	</p:inputText>	
-																		
-													<h:outputText id="msgSerEstado" value=" SerEstado"/>
-							<p:inputText id="txtSerEstado" disabled="true" binding="#{serviciosView.txtSerEstado}"/>
-													<h:outputText id="msgSerNombre" value=" SerNombre"/>
-							<p:inputText id="txtSerNombre" disabled="true" binding="#{serviciosView.txtSerNombre}"/>
-													<h:outputText id="msgSerUsuCrea" value=" SerUsuCrea"/>
-							<p:inputText id="txtSerUsuCrea" disabled="true" binding="#{serviciosView.txtSerUsuCrea}"/>
-													<h:outputText id="msgSerUsuModifica" value=" SerUsuModifica"/>
-							<p:inputText id="txtSerUsuModifica" disabled="true" binding="#{serviciosView.txtSerUsuModifica}"/>
-												
-										   </h:panelGrid>
-				</p:panel>
-	   			<p:panel id="panelBotones">
-					<div align="center">					
-						<p:commandButton id="btnSave" binding="#{serviciosView.btnSave}" disabled="true" value="Save" action="#{serviciosView.action_save()}" update="panelServicios,msg,panelBotones" />
-						<p:commandButton id="btnDelete" binding="#{serviciosView.btnDelete}" disabled="true" value="Delete" action="#{serviciosView.action_delete_master()}" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" update="panelServicios,msg,panelBotones" />
-						<p:commandButton id="btnClear" value="Clear" action="#{serviciosView.action_clear()}" update="panelServicios,msg,panelBotones" />
-					</div>
-				</p:panel>			
-			</h:form>
-		</f:view>
-			</ui:define>		
-		</ui:composition>	
-	</h:body>	
-</html>	
+
+<h:head>
+
+	<meta charset="UTF-8" />
+	<title>PETSLAND || Veterinarias</title>
+	<meta
+		content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
+		name='viewport' />
+
+</h:head>
+
+<h:body class="skin-green">
+	<ui:composition template="/ROOT/menuRoot.xhtml">
+		<ui:define name="body">
+			<f:view>
+
+				<!-- Site wrapper -->
+				<div style="min-height: 100%">
+
+
+					<f:view>
+
+						<h:form id="form">
+							<p:messages id="msg" />
+
+							<div class="panel panel-default" style="height: 780px">
+
+								<div class="panel-heading" align="center"
+									style="font-family: sans-serif; font-size: 150%;">Servicios
+									Veterinarias</div>
+
+								<div class="panel-body">
+									<p:dataTable id="tabla" value="#{vetsServsView.data}"
+										var="vetsServs" paginator="true" rows="5" editable="true">
+
+										<p:ajax event="rowEdit" update=":form:msg,:form:tabla"
+											listener="#{vetsServsView.rowEventListener}" />
+
+										<p:column filterBy="#{vetsServs.vsCodigo}"
+											sortBy="#{vetsServs.vsCodigo}" headerText="vsCodigo">
+											<p:cellEditor>
+												<f:facet name="output">
+													<h:outputText value="#{vetsServs.vsCodigo}" />
+												</f:facet>
+												<f:facet name="input">
+													<p:inputText value="#{vetsServs.vsCodigo}" />
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+
+
+										<p:column filterBy="#{vetsServs.vsEstado}"
+											sortBy="#{vetsServs.vsEstado}" headerText="vsEstado">
+
+											<p:cellEditor>
+
+												<f:facet name="output">
+													<h:outputText value="#{vetsServs.vsEstado}" />
+												</f:facet>
+
+												<f:facet name="input">
+													<p:inputText value="#{vetsServs.vsEstado}" />
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+
+
+										<p:column filterBy="#{vetsServs.serCodigo_Servicios}"
+											sortBy="#{vetsServs.serCodigo_Servicios}"
+											headerText="serCodigo_Servicios">
+
+											<p:cellEditor>
+
+												<f:facet name="output">
+													<h:outputText value="#{vetsServs.serCodigo_Servicios}" />
+												</f:facet>
+
+												<f:facet name="input">
+													<p:inputText value="#{vetsServs.serCodigo_Servicios}" />
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+
+
+										<p:column filterBy="#{vetsServs.vetCodigo_Veterinarias}"
+											sortBy="#{vetsServs.vetCodigo_Veterinarias}"
+											headerText="vetCodigo_Veterinarias">
+
+											<p:cellEditor>
+
+												<f:facet name="output">
+													<h:outputText value="#{vetsServs.vetCodigo_Veterinarias}" />
+												</f:facet>
+
+												<f:facet name="input">
+													<p:inputText value="#{vetsServs.vetCodigo_Veterinarias}" />
+												</f:facet>
+											</p:cellEditor>
+										</p:column>
+
+
+
+										<p:column headerText="Options">
+											<p:rowEditor id="row" />
+											<p:tooltip for="row" value="Edit" showEffect="fade"
+												hideEffect="fade" />
+											<p:tooltip for="btnDelete" value="Delete" showEffect="fade"
+												hideEffect="fade" />
+											<p:commandButton id="btnDelete"
+												actionListener="#{vetsServsView.actionDeleteDataTableEditable}"
+												title="Delete"
+												onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+												icon="ui-icon-trash" update=":form:msg,:form:tabla">
+												<f:attribute name="selectedVetsServs" value="#{vetsServs}" />
+											</p:commandButton>
+
+										</p:column>
+
+									</p:dataTable>
+
+									<p:spacer height="5px" />
+
+									<div align="center">
+
+										<p:commandButton id="btonCrear" value="Crear"
+											action="#{veterinariasView.limpiar()}"
+											styleClass="btn btn-success" icon="ui-icon-plus"
+											update=":formDlg2:txtNombre, :formDlg2:idEstado, :formDlg2:messages"
+											onclick="$('#dlgModificar').modal('show');" />
+
+										<p:commandButton id="btonEditar" value="Editar"
+											action="#{veterinariasView.editar()}"
+											styleClass="btn btn-primary" icon="ui-icon-pencil"
+											update=":formDlg2:txtNombre, :formDlg2:txtTelefono, :formDlg2:txtDireccion,  :formDlg2:idEstado, :formDlg2:messages"
+											binding="#{veterinariasView.btnModify}"
+											onclick="$('#dlgModificar').modal('show');" />
+
+									</div>
+									
+		
+
+								</div>
+
+
+							</div>
+
+						</h:form>
+
+						
+
+						<!-- Inicio Dialogo Modificar -->
+						<h:form id="formDlg2">
+
+							<div class="modal fade" id="dlgModificar" tabindex="-1"
+								role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+
+											<h4 class="modal-title" align="center">Crear/Modificar
+												Veterinarias</h4>
+										</div>
+										<div class="modal-body" id="panelModificar">
+
+											<p:messages id="messages" autoUpdate="false" closable="true" />
+
+											<h:outputText id="msgNombre" value=" Nombre: " />
+											<p:inputText id="txtNombre" type="text" class="form-control"
+												binding="#{veterinariasView.txtVetNombre}" />
+
+											<h:outputText id="msgTelefono" value=" Telefono: " />
+											<p:inputText id="txtTelefono" type="text"
+												class="form-control"
+												binding="#{veterinariasView.txtVetTelefono}" />
+
+											<h:outputText id="msgDireccion" value=" Direccion: " />
+											<p:inputText id="txtDireccion" type="text"
+												class="form-control"
+												binding="#{veterinariasView.txtVetDireccion}" />
+
+											<h:outputText id="msgEstadoRegistro" value=" Estado: " />
+											<h:selectOneMenu id="idEstado"
+												class="form-control text-center"
+												value="#{veterinariasView.estado}">
+												<f:selectItem itemLabel="Activo" itemValue="A" />
+												<f:selectItem itemLabel="Retirado" itemValue="R" />
+											</h:selectOneMenu>
+
+
+
+<h3>Grid Layout</h3>
+    <p:selectManyCheckbox id="grid" value="#{serviciosView.selectedCities}" layout="grid" columns="4">
+        <f:selectItems value="#{serviciosView.data}" var="city" itemLabel="#{city.serNombre}" itemValue="#{city.serNombre}" />
+    </p:selectManyCheckbox>
+      
+      
+      
+      <p:commandButton value="Submit" update="display" oncomplete="PF('dlg').show()" icon="ui-icon-check" />
+ 
+    <p:dialog header="Values" modal="true" showEffect="clip" widgetVar="dlg" resizable="false">
+        <p:outputPanel id="display">
+  
+            <p:dataList value="#{serviciosView.selectedCities}" var="city">
+                <f:facet name="header">
+                    Grid
+                </f:facet>
+                #{city.toString()}
+            </p:dataList>
+           
+        </p:outputPanel>
+    </p:dialog>
+      
+											<p:spacer height="10px" />
+
+											<div align="center">
+												<p:commandButton id="btnSave"
+													binding="#{veterinariasView.btnSave}" value="Guardar"
+													class="btn btn-primary"
+													action="#{veterinariasView.guardarVeterinaria()}"
+													update=":form, :form:tabla, :formDlg2:messages" />
+
+												<p:commandButton value="Cerrar" class="btn btn-danger"
+													action="#{veterinariasView.limpiar}"
+													update=":form, formDlg2"
+													onclick="$('#dlgModificar').modal('hide');" />
+
+											</div>
+
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</h:form>
+						<!-- Fin Dialogo Modificar -->
+						
+						
+
+					</f:view>
+
+				</div>
+				<!-- ./wrapper -->
+
+			</f:view>
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

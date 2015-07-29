@@ -56,4 +56,6 @@ public interface IUsuariosLogic {
 	public UsuariosDTO consultaUsuarioXEmail(String email) throws Exception;
 
 	public Object updateVeterinaria(Veterinarias entity) throws Exception;
+
+	Long existeCorreo(String correo) throws Exception;
 }

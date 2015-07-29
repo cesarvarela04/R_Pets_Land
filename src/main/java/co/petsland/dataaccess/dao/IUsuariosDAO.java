@@ -12,6 +12,7 @@ public interface IUsuariosDAO extends Dao<Usuarios, Long> {
 	public UsuariosDTO loginUsario(String correo, String pass) throws Exception;
 
 	public UsuariosDTO consultaUsuarioXEmail(String email) throws Exception;
-
+    
+	public Long existeCorreo(String correo) throws Exception;
 
 }

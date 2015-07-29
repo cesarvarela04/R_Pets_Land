@@ -1,52 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-	
-	<h:head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-	</h:head>		
-	
-	<h:body>
-		<ui:composition template="/WEB-INF/facelets/template.xhtml">	
-		<ui:define name="body">	
-		<f:view>
-			<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
-			<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
-   				<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
-			</p:dialog>
-			<h:form id="formDialog">
-				<p:messages id="msg" />
-				<p:growl id="men"/>
-					<p:panel id="panelServicios" header="Servicios">							
-						<h:panelGrid columns="2" id="panelGrid" >
-												 	<h:outputText id="msgSerCodigo" value="SerCodigo"/>
-						 	<p:inputText id="txtSerCodigo" binding="#{serviciosView.txtSerCodigo}">
-						 		<p:ajax update="panelServicios,msg,panelBotones" listener="#{serviciosView.listener_txtId}"/>
-						 	</p:inputText>	
-																		
-													<h:outputText id="msgSerEstado" value=" SerEstado"/>
-							<p:inputText id="txtSerEstado" disabled="true" binding="#{serviciosView.txtSerEstado}"/>
-													<h:outputText id="msgSerNombre" value=" SerNombre"/>
-							<p:inputText id="txtSerNombre" disabled="true" binding="#{serviciosView.txtSerNombre}"/>
-													<h:outputText id="msgSerUsuCrea" value=" SerUsuCrea"/>
-							<p:inputText id="txtSerUsuCrea" disabled="true" binding="#{serviciosView.txtSerUsuCrea}"/>
-													<h:outputText id="msgSerUsuModifica" value=" SerUsuModifica"/>
-							<p:inputText id="txtSerUsuModifica" disabled="true" binding="#{serviciosView.txtSerUsuModifica}"/>
-												
-										   </h:panelGrid>
-				</p:panel>
-	   			<p:panel id="panelBotones">
-					<div align="center">					
-						<p:commandButton id="btnSave" binding="#{serviciosView.btnSave}" disabled="true" value="Save" action="#{serviciosView.action_save()}" update="panelServicios,msg,panelBotones" />
-						<p:commandButton id="btnDelete" binding="#{serviciosView.btnDelete}" disabled="true" value="Delete" action="#{serviciosView.action_delete_master()}" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" update="panelServicios,msg,panelBotones" />
-						<p:commandButton id="btnClear" value="Clear" action="#{serviciosView.action_clear()}" update="panelServicios,msg,panelBotones" />
-					</div>
-				</p:panel>			
-			</h:form>
-		</f:view>
-			</ui:define>		
-		</ui:composition>	
-	</h:body>	
-</html>	
+
+<h:head>
+
+	<meta charset="UTF-8" />
+	<title>PETSLAND || Servicios Veterinarias</title>
+	<meta
+		content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
+		name='viewport' />
+
+</h:head>
+
+<h:body class="skin-green">
+	<ui:composition template="/ROOT/menuRoot.xhtml">
+		<ui:define name="body">
+			<f:view>
+
+				<!-- Site wrapper -->
+				<div style="min-height: 100%">
+
+
+					<f:view>
+
+						<h:form id="form">
+							<p:messages id="msg" />
+
+							<div class="panel panel-default" style="height: 780px">
+
+								<div class="panel-heading" align="center"
+									style="font-family: sans-serif; font-size: 150%;">Servicios</div>
+
+								<div class="panel-body">
+									<p:dataTable value="#{serviciosView.servicioDataModel}"
+										var="servicio"
+										selection="#{serviciosView.selectedServicios}"
+										id="tabla" paginator="true" rows="5">
+
+										<p:column selectionMode="single" style="width:40px" />
+
+										<p:column filterBy="#{servicio.serCodigo}"
+											sortBy="#{servicio.serCodigo}">
+											<f:facet name="header">
+												<h:outputText value="Codigo" />
+											</f:facet>
+											<h:outputText value="#{servicio.serCodigo}" />
+										</p:column>
+
+										<p:column filterBy="#{servicio.serNombre}"
+											sortBy="#{servicio.serNombre}">
+											<f:facet name="header">
+												<h:outputText value="Nombre Servicio" />
+											</f:facet>
+											<h:outputText value="#{servicio.serNombre}" />
+										</p:column>
+
+										<p:column filterBy="#{servicio.serEstado}"
+											sortBy="#{servicio.serEstado}">
+											<f:facet name="header">
+												<h:outputText value="Estado" />
+											</f:facet>
+											<h:outputText value="#{servicio.serEstado}" />
+										</p:column>
+
+									</p:dataTable>
+
+									<p:spacer height="5px" />
+
+									<div align="center">
+
+										<p:commandButton id="btonCrear" value="Crear"
+											action="#{serviciosView.limpiar()}"
+											styleClass="btn btn-success" icon="ui-icon-plus"
+											update=":formDlg2:txtNombre, :formDlg2:idEstado, :formDlg2:messages"
+											onclick="$('#dlgModificar').modal('show');" />
+
+										<p:commandButton id="btonEditar" value="Editar"
+											action="#{serviciosView.editar()}"
+											styleClass="btn btn-primary" icon="ui-icon-pencil"
+											update=":formDlg2:txtNombre, :formDlg2:idEstado, :formDlg2:messages"
+											binding="#{serviciosView.btnModify}"
+											onclick="$('#dlgModificar').modal('show');" />
+
+									</div>
+
+								</div>
+
+							</div>
+
+						</h:form>
+
+						<!-- Inicio Dialogo Modificar -->
+						<h:form id="formDlg2">
+
+							<div class="modal fade" id="dlgModificar" tabindex="-1"
+								role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+
+											<h4 class="modal-title" align="center">Crear/Modificar
+												Servicios</h4>
+										</div>
+										<div class="modal-body" id="panelModificar">
+
+											<p:messages id="messages" autoUpdate="false" closable="true" />
+
+											<h:outputText id="msgNombre" value=" Nombre: " />
+											<p:inputText id="txtNombre" type="text" class="form-control"
+												binding="#{serviciosView.txtSerNombre}" />
+
+											<h:outputText id="msgEstadoRegistro" value=" Estado: " />
+											<h:selectOneMenu id="idEstado"
+												class="form-control text-center"
+												value="#{serviciosView.estado}">
+												<f:selectItem itemLabel="Activo" itemValue="A" />
+												<f:selectItem itemLabel="Retirado" itemValue="R" />
+											</h:selectOneMenu>
+
+											<p:spacer height="10px" />
+
+											<div align="center">
+												<p:commandButton id="btnSave"
+													binding="#{serviciosView.btnSave}" value="Guardar"
+													class="btn btn-primary"
+													action="#{serviciosView.guardarServicio()}"
+													update=":form, :form:tabla, :formDlg2:messages" />
+
+												<p:commandButton value="Cerrar" class="btn btn-danger"
+													action="#{serviciosView.limpiar}"
+													update=":form, formDlg2"
+													onclick="$('#dlgModificar').modal('hide');" />
+
+											</div>
+
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</h:form>
+						<!-- Fin Dialogo Modificar -->
+
+					</f:view>
+
+				</div>
+				<!-- ./wrapper -->
+
+			</f:view>
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>
