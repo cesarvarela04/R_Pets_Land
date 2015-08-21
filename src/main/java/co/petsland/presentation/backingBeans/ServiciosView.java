@@ -88,6 +88,19 @@ public class ServiciosView implements Serializable {
     public void setSelectedCities(String[] selectedCities) {
         this.selectedCities = selectedCities;
     }
+    
+    
+	public String imprimirCheck(String estado) {
+
+		entity = new Servicios();
+
+		for (int x = 0; x < selectedCities.length; x++) {
+			System.out.println("Codigo servicio: " + selectedCities[x]);
+			System.out.println("Estado: " + entity.getSerEstado());
+		}
+
+		return "";
+	}
    
     
     // ++
